@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculateur IMC & Calories gratuit — Poids idéal & Besoins journaliers</title>
+  <meta name="description" content="Calculez votre IMC, votre poids idéal et vos besoins caloriques journaliers gratuitement. Outil simple et précis."/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#0d0d14;font-family:'Segoe UI',Arial,sans-serif;color:#f0f0f5;min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes barFill{from{width:0}to{width:var(--w)}}
+
+    header{width:100%;background:rgba(13,13,20,0.95);border-bottom:1px solid rgba(255,255,255,0.07);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+    .logo{font-size:18px;font-weight:700;color:#ff7c6f;letter-spacing:0.04em;}
+    .logo span{color:#f0f0f5;}
+    .badge{font-size:11px;background:rgba(255,124,111,0.15);color:#ff9d94;border:1px solid rgba(255,124,111,0.25);border-radius:20px;padding:4px 12px;}
+
+    main{width:100%;max-width:640px;padding:36px 20px 80px;display:flex;flex-direction:column;gap:24px;animation:fadeIn 0.4s ease;}
+
+    /* SECTION CARD */
+    .card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:24px 22px;}
+    .card-title{font-size:13px;font-weight:700;color:#ff9d94;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+
+    /* GENDER */
+    .gender-row{display:flex;gap:10px;margin-bottom:20px;}
+    .gender-btn{flex:1;padding:13px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:rgba(240,240,245,0.5);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;text-align:center;}
+    .gender-btn.active{background:rgba(255,124,111,0.15);border-color:rgba(255,124,111,0.4);color:#ff9d94;}
+
+    /* INPUTS */
+    .fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .field{display:flex;flex-direction:column;gap:7px;}
+    .field label{font-size:11px;color:rgba(240,240,245,0.4);letter-spacing:0.12em;text-transform:uppercase;}
+    .field input, .field select{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 14px;font-size:15px;color:#f0f0f5;outline:none;transition:border-color 0.2s;font-family:inherit;width:100%;}
+    .field input:focus, .field select:focus{border-color:rgba(255,124,111,0.4);}
+    .field select option{background:#1a1a2e;color:#f0f0f5;}
+
+    /* BOUTON */
+    .btn-calc{width:100%;padding:15px;background:linear-gradient(135deg,#ff7c6f,#e05a50);border:none;border-radius:13px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:inherit;margin-top:8px;box-shadow:0 4px 20px rgba(255,124,111,0.3);}
+    .btn-calc:active{transform:scale(0.98);}
+
+    /* RÉSULTATS */
+    .results{display:none;flex-direction:column;gap:18px;animation:fadeIn 0.5s ease;}
+    .results.show{display:flex;}
+
+    /* IMC GAUGE */
+    .imc-wrap{text-align:center;padding:8px 0;}
+    .imc-number{font-size:64px;font-weight:200;line-height:1;}
+    .imc-label{font-size:15px;font-weight:700;margin:6px 0 16px;}
+    .gauge{width:100%;height:14px;border-radius:99px;background:linear-gradient(90deg,#4fc3f7 0%,#81c784 25%,#fff176 50%,#ffb74d 75%,#ef5350 100%);position:relative;margin-bottom:8px;}
+    .gauge-cursor{position:absolute;top:-5px;width:4px;height:24px;background:#fff;border-radius:2px;transform:translateX(-50%);transition:left 0.8s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px rgba(255,255,255,0.6);}
+    .gauge-labels{display:flex;justify-content:space-between;font-size:10px;color:rgba(240,240,245,0.3);}
+
+    /* METRIC CARDS */
+    .metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .metric{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;text-align:center;}
+    .metric-val{font-size:28px;font-weight:200;color:#fff;margin-bottom:4px;}
+    .metric-lbl{font-size:11px;color:rgba(240,240,245,0.38);letter-spacing:0.08em;text-transform:uppercase;}
+    .metric-sub{font-size:12px;color:rgba(240,240,245,0.5);margin-top:4px;}
+
+    /* CALORIES PAR ACTIVITÉ */
+    .activ-list{display:flex;flex-direction:column;gap:10px;}
+    .activ-row{display:flex;align-items:center;gap:12px;}
+    .activ-name{font-size:13px;color:rgba(240,240,245,0.65);min-width:140px;}
+    .activ-bar-wrap{flex:1;background:rgba(255,255,255,0.06);border-radius:99px;height:8px;overflow:hidden;}
+    .activ-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,#ff7c6f,#ffb347);transition:width 0.8s cubic-bezier(.34,1.56,.64,1);}
+    .activ-val{font-size:13px;font-weight:700;color:#ff9d94;min-width:70px;text-align:right;}
+
+    /* CONSEILS */
+    .conseils{display:flex;flex-direction:column;gap:8px;}
+    .conseil{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:11px;padding:12px 14px;font-size:13px;color:rgba(240,240,245,0.65);line-height:1.5;display:flex;gap:10px;align-items:flex-start;}
+    .conseil-icon{font-size:16px;flex-shrink:0;}
+
+    /* RESET */
+    .btn-reset{width:100%;padding:11px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:11px;color:rgba(240,240,245,0.35);font-size:13px;cursor:pointer;transition:all 0.2s;font-family:inherit;}
+    .btn-reset:hover{border-color:rgba(255,124,111,0.3);color:#ff9d94;}
+
+    footer{margin-top:auto;padding:20px;text-align:center;font-size:11px;color:rgba(240,240,245,0.15);}
+
+    @media(max-width:480px){
+      .fields{grid-template-columns:1fr;}
+      .metrics{grid-template-columns:1fr 1fr;}
+      .activ-name{min-width:110px;font-size:12px;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🔥 Calorie<span>Check</span></div>
+  <div class="badge">100% gratuit</div>
+</header>
+
+<main>
+
+  <!-- FORMULAIRE -->
+  <div class="card" id="formCard">
+    <div class="card-title">📊 Vos informations</div>
+
+    <div class="gender-row">
+      <button class="gender-btn active" id="btnH" onclick="setGenre('H')">👨 Homme</button>
+      <button class="gender-btn" id="btnF" onclick="setGenre('F')">👩 Femme</button>
+    </div>
+
+    <div class="fields">
+      <div class="field">
+        <label>Âge (ans)</label>
+        <input type="number" id="age" placeholder="Ex : 25" min="10" max="100"/>
+      </div>
+      <div class="field">
+        <label>Taille (cm)</label>
+        <input type="number" id="taille" placeholder="Ex : 175" min="100" max="250"/>
+      </div>
+      <div class="field">
+        <label>Poids (kg)</label>
+        <input type="number" id="poids" placeholder="Ex : 70" min="30" max="300"/>
+      </div>
+      <div class="field">
+        <label>Activité physique</label>
+        <select id="activite">
+          <option value="1.2">🛋️ Sédentaire</option>
+          <option value="1.375">🚶 Légère (1-3j/sem)</option>
+          <option value="1.55" selected>🏃 Modérée (3-5j/sem)</option>
+          <option value="1.725">💪 Intense (6-7j/sem)</option>
+          <option value="1.9">🏋️ Très intense</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:14px;">
+      <label>Objectif</label>
+      <select id="objectif">
+        <option value="deficit">⬇️ Perdre du poids</option>
+        <option value="maintien" selected>⚖️ Maintenir mon poids</option>
+        <option value="surplus">⬆️ Prendre de la masse</option>
+      </select>
+    </div>
+
+    <button class="btn-calc" onclick="calculer()" style="margin-top:18px;">🔥 Calculer mes besoins</button>
+  </div>
+
+  <!-- RÉSULTATS -->
+  <div class="results" id="results">
+
+    <!-- IMC -->
+    <div class="card">
+      <div class="card-title">⚖️ Mon IMC</div>
+      <div class="imc-wrap">
+        <div class="imc-number" id="imcVal">--</div>
+        <div class="imc-label" id="imcLabel" style="color:#81c784;">--</div>
+        <div class="gauge">
+          <div class="gauge-cursor" id="gaugeCursor" style="left:50%;"></div>
+        </div>
+        <div class="gauge-labels">
+          <span>Maigreur</span><span>Normal</span><span>Surpoids</span><span>Obésité</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MÉTRIQUES -->
+    <div class="card">
+      <div class="card-title">📈 Mes chiffres clés</div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-val" id="calMaintien">--</div>
+          <div class="metric-lbl">Calories/jour</div>
+          <div class="metric-sub" id="calSub">maintien</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="calObjectif">--</div>
+          <div class="metric-lbl">Objectif</div>
+          <div class="metric-sub" id="objSub">--</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="poidsIdeal">--</div>
+          <div class="metric-lbl">Poids idéal</div>
+          <div class="metric-sub">kg</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="metabolisme">--</div>
+          <div class="metric-lbl">Métabolisme</div>
+          <div class="metric-sub">kcal base</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALORIES PAR ACTIVITÉ -->
+    <div class="card">
+      <div class="card-title">🏃 Calories brûlées par activité</div>
+      <div class="activ-list" id="activList"></div>
+    </div>
+
+    <!-- MACROS -->
+    <div class="card">
+      <div class="card-title">🥗 Répartition recommandée</div>
+      <div class="activ-list" id="macroList"></div>
+    </div>
+
+    <!-- CONSEILS -->
+    <div class="card">
+      <div class="card-title">💡 Conseils personnalisés</div>
+      <div class="conseils" id="conseilsList"></div>
+    </div>
+
+    <button class="btn-reset" onclick="resetForm()">↺ Nouveau calcul</button>
+  </div>
+
+</main>
+
+<footer>CalorieCheck — Calculateur IMC & calories gratuit · Outil en ligne</footer>
+
+<script>
+var genre = "H";
+
+function setGenre(g) {
+  genre = g;
+  document.getElementById("btnH").className = "gender-btn" + (g==="H"?" active":"");
+  document.getElementById("btnF").className = "gender-btn" + (g==="F"?" active":"");
+}
+
+function calculer() {
+  var age = parseFloat(document.getElementById("age").value);
+  var taille = parseFloat(document.getElementById("taille").value);
+  var poids = parseFloat(document.getElementById("poids").value);
+  var activite = parseFloat(document.getElementById("activite").value);
+  var objectif = document.getElementById("objectif").value;
+
+  if(!age||!taille||!poids||age<10||age>100||taille<100||taille>250||poids<30||poids>300) {
+    alert("Veuillez remplir tous les champs correctement.");
+    return;
+  }
+
+  // IMC
+  var imc = poids / ((taille/100)*(taille/100));
+  var imcR = Math.round(imc*10)/10;
+
+  // Métabolisme basal (Harris-Benedict révisé)
+  var bmr;
+  if(genre==="H") {
+    bmr = 88.362 + (13.397*poids) + (4.799*taille) - (5.677*age);
+  } else {
+    bmr = 447.593 + (9.247*poids) + (3.098*taille) - (4.330*age);
+  }
+  bmr = Math.round(bmr);
+
+  // TDEE (besoin total)
+  var tdee = Math.round(bmr * activite);
+
+  // Objectif
+  var calObj, objLabel, objColor;
+  if(objectif==="deficit") {
+    calObj = Math.round(tdee * 0.8);
+    objLabel = "Perte de poids";
+    objColor = "#4fc3f7";
+  } else if(objectif==="surplus") {
+    calObj = Math.round(tdee * 1.1);
+    objLabel = "Prise de masse";
+    objColor = "#81c784";
+  } else {
+    calObj = tdee;
+    objLabel = "Maintien";
+    objColor = "#ffb347";
+  }
+
+  // Poids idéal (formule de Lorentz)
+  var pideal;
+  if(genre==="H") pideal = taille - 100 - (taille-150)/4;
+  else pideal = taille - 100 - (taille-150)/2.5;
+  pideal = Math.round(pideal*10)/10;
+
+  // IMC label et couleur
+  var imcLabel, imcColor, gaugePos;
+  if(imc < 16.5){imcLabel="Dénutrition sévère";imcColor="#ef5350";gaugePos=5;}
+  else if(imc < 18.5){imcLabel="Maigreur";imcColor="#4fc3f7";gaugePos=12;}
+  else if(imc < 25){imcLabel="Poids normal ✅";imcColor="#81c784";gaugePos=37;}
+  else if(imc < 30){imcLabel="Surpoids";imcColor="#ffb74d";gaugePos=62;}
+  else if(imc < 35){imcLabel="Obésité modérée";imcColor="#ef5350";gaugePos=80;}
+  else{imcLabel="Obésité sévère";imcColor="#b71c1c";gaugePos=95;}
+
+  // Activités (calories brûlées en 30 min, proportionnel au poids)
+  var activites = [
+    {nom:"🚶 Marche",met:3.5},
+    {nom:"🚴 Vélo",met:7},
+    {nom:"🏊 Natation",met:8},
+    {nom:"🏃 Course",met:10},
+    {nom:"🏋️ Musculation",met:6},
+    {nom:"🧘 Yoga",met:2.5},
+  ];
+  var maxCal = 0;
+  var activData = activites.map(function(a){
+    var cal = Math.round(a.met * poids * 0.5);
+    if(cal>maxCal) maxCal=cal;
+    return {nom:a.nom, cal:cal};
+  });
+
+  // Macros
+  var protG = Math.round(calObj * 0.30 / 4);
+  var glucG = Math.round(calObj * 0.45 / 4);
+  var lipG  = Math.round(calObj * 0.25 / 9);
+  var macros = [
+    {nom:"🥩 Protéines",g:protG,cal:Math.round(calObj*0.30),pct:30},
+    {nom:"🍚 Glucides",g:glucG,cal:Math.round(calObj*0.45),pct:45},
+    {nom:"🥑 Lipides",g:lipG,cal:Math.round(calObj*0.25),pct:25},
+  ];
+
+  // Conseils personnalisés
+  var conseils = [];
+  if(imc < 18.5) {
+    conseils.push({icon:"🥗",txt:"Augmentez vos apports en protéines et en bonnes graisses (avocat, huile d'olive, noix) pour atteindre un poids sain."});
+    conseils.push({icon:"💊",txt:"Consultez un médecin ou un nutritionniste si votre maigreur est importante."});
+  } else if(imc < 25) {
+    conseils.push({icon:"✅",txt:"Votre poids est dans la norme ! Maintenez une alimentation équilibrée et une activité physique régulière."});
+    conseils.push({icon:"💧",txt:"Buvez au moins 1,5L d'eau par jour. La bonne hydratation optimise le métabolisme."});
+  } else {
+    conseils.push({icon:"🥦",txt:"Privilégiez les légumes, protéines maigres et glucides complexes. Évitez les sucres raffinés et la junk food."});
+    conseils.push({icon:"🏃",txt:"30 minutes de marche rapide par jour suffisent pour commencer à perdre du poids progressivement."});
+  }
+  if(objectif==="deficit") {
+    conseils.push({icon:"📉",txt:"Ne descendez jamais en dessous de "+Math.round(bmr)+" kcal/jour (votre métabolisme de base) : votre corps en a besoin pour fonctionner."});
+    conseils.push({icon:"⏰",txt:"Visez une perte de 0,5 à 1 kg par semaine maximum. Aller trop vite risque d'entraîner une reprise rapide."});
+  } else if(objectif==="surplus") {
+    conseils.push({icon:"💪",txt:"Associez l'excédent calorique à une musculation régulière pour que le surplus se transforme en muscle, pas en graisse."});
+  }
+  conseils.push({icon:"😴",txt:"Le sommeil est aussi important que l'alimentation : dormez 7 à 9h par nuit pour optimiser votre composition corporelle."});
+
+  // AFFICHAGE
+  document.getElementById("imcVal").textContent = imcR;
+  document.getElementById("imcVal").style.color = imcColor;
+  document.getElementById("imcLabel").textContent = imcLabel;
+  document.getElementById("imcLabel").style.color = imcColor;
+  document.getElementById("gaugeCursor").style.left = gaugePos+"%";
+
+  document.getElementById("calMaintien").textContent = tdee.toLocaleString();
+  document.getElementById("calObjectif").textContent = calObj.toLocaleString();
+  document.getElementById("calObjectif").style.color = objColor;
+  document.getElementById("objSub").textContent = objLabel;
+  document.getElementById("poidsIdeal").textContent = pideal;
+  document.getElementById("metabolisme").textContent = bmr.toLocaleString();
+
+  // Activités
+  var al = document.getElementById("activList");
+  al.innerHTML = "";
+  activData.forEach(function(a){
+    var pct = Math.round((a.cal/maxCal)*100);
+    al.innerHTML += '<div class="activ-row"><span class="activ-name">'+a.nom+'</span><div class="activ-bar-wrap"><div class="activ-bar" style="width:0%" data-pct="'+pct+'"></div></div><span class="activ-val">'+a.cal+' kcal</span></div>';
+  });
+
+  // Macros
+  var ml = document.getElementById("macroList");
+  ml.innerHTML = "";
+  macros.forEach(function(m){
+    ml.innerHTML += '<div class="activ-row"><span class="activ-name">'+m.nom+'</span><div class="activ-bar-wrap"><div class="activ-bar" style="width:0%;background:linear-gradient(90deg,#7c6fff,#a090ff)" data-pct="'+m.pct+'"></div></div><span class="activ-val">'+m.g+'g</span></div>';
+  });
+
+  // Conseils
+  var cl = document.getElementById("conseilsList");
+  cl.innerHTML = "";
+  conseils.forEach(function(c){
+    cl.innerHTML += '<div class="conseil"><span class="conseil-icon">'+c.icon+'</span><span>'+c.txt+'</span></div>';
+  });
+
+  // Afficher résultats
+  document.getElementById("formCard").style.display = "none";
+  document.getElementById("results").className = "results show";
+
+  // Animer les barres
+  setTimeout(function(){
+    document.querySelectorAll(".activ-bar").forEach(function(b){
+      b.style.width = b.dataset.pct+"%";
+    });
+  }, 100);
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function resetForm() {
+  document.getElementById("formCard").style.display = "block";
+  document.getElementById("results").className = "results";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
