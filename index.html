@@ -1,386 +1,1246 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta name="google-site-verification" content="Uv8ekNJBzKoZk6YiNHvrfAYf7l0be_8-UOB6WHAH0Ug"/>
   <meta charset="UTF-8"/>
+  <meta name="google-site-verification" content="Uv8ekNJBzKoZk6YiNHvrfAYf7l0be_8-UOB6WHAH0Ug"/>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3510146937713283" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3510146937713283"
-     crossorigin="anonymous"></script>
-  <title>Calculateur IMC & Calories gratuit — Poids idéal & Besoins journaliers</title>
-  <meta name="description" content="Calculez votre IMC, votre poids idéal et vos besoins caloriques journaliers gratuitement. Outil simple et précis."/>
+  <title>CalorieCheck.fr — Calculateurs gratuits en ligne</title>
+  <meta name="description" content="Calculateurs gratuits en ligne sur CalorieCheck.fr : IMC, calories, crédit, peinture, carburant, convertisseur, grossesse, dates et plus. Rapide, simple, sans inscription."/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{background:#0d0d14;font-family:'Segoe UI',Arial,sans-serif;color:#f0f0f5;min-height:100vh;display:flex;flex-direction:column;align-items:center;}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes barFill{from{width:0}to{width:var(--w)}}
+    body{background:#f0f2f5;font-family:'Segoe UI',Arial,sans-serif;color:#2d3436;min-height:100vh;}
+    button,input,select,textarea{font-family:inherit;}
+    input::placeholder,textarea::placeholder{color:#b2bec3;}
+    ::-webkit-scrollbar{width:5px;}
+    ::-webkit-scrollbar-thumb{background:#dfe6e9;border-radius:3px;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{from{opacity:0.4}to{opacity:0.9}}
 
-    header{width:100%;background:rgba(13,13,20,0.95);border-bottom:1px solid rgba(255,255,255,0.07);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-    .logo{font-size:18px;font-weight:700;color:#ff7c6f;letter-spacing:0.04em;}
-    .logo span{color:#f0f0f5;}
-    .badge{font-size:11px;background:rgba(255,124,111,0.15);color:#ff9d94;border:1px solid rgba(255,124,111,0.25);border-radius:20px;padding:4px 12px;}
+    header{background:#fff;border-bottom:1px solid #e9ecef;padding:13px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
+    .logo{font-size:18px;font-weight:800;color:#2d3436;display:flex;align-items:center;gap:8px;}
+    .logo-badge{background:linear-gradient(135deg,#00b894,#00cec9);color:#fff;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:700;}
 
-    main{width:100%;max-width:640px;padding:36px 20px 80px;display:flex;flex-direction:column;gap:24px;animation:fadeIn 0.4s ease;}
+    .nav{width:100%;background:#fff;border-bottom:2px solid #f0f2f5;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;position:sticky;top:55px;z-index:99;}
+    .nav::-webkit-scrollbar{display:none;}
+    .nav-tab{padding:12px 14px;border:none;background:transparent;color:#b2bec3;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s;}
+    .nav-tab.active{color:#2d3436;border-bottom-color:#00b894;}
+    .nav-tab:hover{color:#636e72;}
 
-    /* SECTION CARD */
-    .card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:24px 22px;}
-    .card-title{font-size:13px;font-weight:700;color:#ff9d94;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+    .page{display:none;max-width:680px;margin:0 auto;padding:24px 16px 80px;animation:fadeIn 0.3s ease;}
+    .page.active{display:block;}
 
-    /* GENDER */
-    .gender-row{display:flex;gap:10px;margin-bottom:20px;}
-    .gender-btn{flex:1;padding:13px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:rgba(240,240,245,0.5);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;text-align:center;}
-    .gender-btn.active{background:rgba(255,124,111,0.15);border-color:rgba(255,124,111,0.4);color:#ff9d94;}
+    .card{background:#fff;border-radius:14px;padding:20px 18px;margin-bottom:14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);}
+    .card-title{font-size:12px;font-weight:700;color:#636e72;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:7px;}
+    .card-title span{font-size:16px;}
 
-    /* INPUTS */
-    .fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-    .field{display:flex;flex-direction:column;gap:7px;}
-    .field label{font-size:11px;color:rgba(240,240,245,0.4);letter-spacing:0.12em;text-transform:uppercase;}
-    .field input, .field select{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:11px 14px;font-size:15px;color:#f0f0f5;outline:none;transition:border-color 0.2s;font-family:inherit;width:100%;}
-    .field input:focus, .field select:focus{border-color:rgba(255,124,111,0.4);}
-    .field select option{background:#1a1a2e;color:#f0f0f5;}
+    .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .field{display:flex;flex-direction:column;gap:6px;}
+    .field label{font-size:11px;color:#636e72;font-weight:600;letter-spacing:0.05em;}
+    .inp{background:#f8f9fa;border:1.5px solid #e9ecef;border-radius:9px;padding:10px 13px;font-size:14px;color:#2d3436;outline:none;transition:border-color 0.2s;width:100%;}
+    .inp:focus{border-color:#00b894;background:#fff;}
+    select.inp option{background:#fff;}
 
-    /* BOUTON */
-    .btn-calc{width:100%;padding:15px;background:linear-gradient(135deg,#ff7c6f,#e05a50);border:none;border-radius:13px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:inherit;margin-top:8px;box-shadow:0 4px 20px rgba(255,124,111,0.3);}
-    .btn-calc:active{transform:scale(0.98);}
+    .btn-main{width:100%;padding:13px;background:linear-gradient(135deg,#00b894,#00cec9);border:none;border-radius:11px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(0,184,148,0.3);transition:all 0.2s;margin-top:8px;}
+    .btn-main:active{transform:scale(0.98);}
+    .btn-sec{width:100%;padding:10px;background:transparent;border:1.5px solid #e9ecef;border-radius:10px;color:#636e72;font-size:13px;cursor:pointer;transition:all 0.2s;margin-top:8px;font-weight:600;}
+    .btn-sec:hover{border-color:#00b894;color:#00b894;}
 
-    /* RÉSULTATS */
-    .results{display:none;flex-direction:column;gap:18px;animation:fadeIn 0.5s ease;}
-    .results.show{display:flex;}
+    .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+    .res-box{background:#f8f9fa;border:1.5px solid #e9ecef;border-radius:11px;padding:14px;text-align:center;}
+    .res-val{font-size:26px;font-weight:300;color:#2d3436;margin-bottom:3px;}
+    .res-lbl{font-size:10px;color:#b2bec3;text-transform:uppercase;letter-spacing:0.08em;}
+    .res-sub{font-size:11px;color:#636e72;margin-top:3px;}
+    .res-highlight{background:linear-gradient(135deg,rgba(0,184,148,0.08),rgba(0,206,201,0.05));border-color:rgba(0,184,148,0.25);}
+    .res-highlight .res-val{color:#00b894;}
 
-    /* IMC GAUGE */
-    .imc-wrap{text-align:center;padding:8px 0;}
-    .imc-number{font-size:64px;font-weight:200;line-height:1;}
-    .imc-label{font-size:15px;font-weight:700;margin:6px 0 16px;}
-    .gauge{width:100%;height:14px;border-radius:99px;background:linear-gradient(90deg,#4fc3f7 0%,#81c784 25%,#fff176 50%,#ffb74d 75%,#ef5350 100%);position:relative;margin-bottom:8px;}
-    .gauge-cursor{position:absolute;top:-5px;width:4px;height:24px;background:#fff;border-radius:2px;transform:translateX(-50%);transition:left 0.8s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 8px rgba(255,255,255,0.6);}
-    .gauge-labels{display:flex;justify-content:space-between;font-size:10px;color:rgba(240,240,245,0.3);}
+    .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+    .bar-name{font-size:12px;color:#636e72;min-width:130px;}
+    .bar-wrap{flex:1;background:#f0f2f5;border-radius:99px;height:7px;overflow:hidden;}
+    .bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#00b894,#00cec9);transition:width 0.8s cubic-bezier(.34,1.56,.64,1);}
+    .bar-val{font-size:12px;font-weight:700;color:#00b894;min-width:70px;text-align:right;}
 
-    /* METRIC CARDS */
-    .metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-    .metric{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;text-align:center;}
-    .metric-val{font-size:28px;font-weight:200;color:#fff;margin-bottom:4px;}
-    .metric-lbl{font-size:11px;color:rgba(240,240,245,0.38);letter-spacing:0.08em;text-transform:uppercase;}
-    .metric-sub{font-size:12px;color:rgba(240,240,245,0.5);margin-top:4px;}
+    .conseil{background:#f8f9fa;border-left:3px solid #00b894;border-radius:0 9px 9px 0;padding:10px 13px;font-size:12px;color:#636e72;line-height:1.5;display:flex;gap:9px;margin-bottom:7px;}
 
-    /* CALORIES PAR ACTIVITÉ */
-    .activ-list{display:flex;flex-direction:column;gap:10px;}
-    .activ-row{display:flex;align-items:center;gap:12px;}
-    .activ-name{font-size:13px;color:rgba(240,240,245,0.65);min-width:140px;}
-    .activ-bar-wrap{flex:1;background:rgba(255,255,255,0.06);border-radius:99px;height:8px;overflow:hidden;}
-    .activ-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,#ff7c6f,#ffb347);transition:width 0.8s cubic-bezier(.34,1.56,.64,1);}
-    .activ-val{font-size:13px;font-weight:700;color:#ff9d94;min-width:70px;text-align:right;}
+    .gbtn-row{display:flex;gap:8px;margin-bottom:14px;}
+    .gbtn{flex:1;padding:10px;border-radius:9px;border:1.5px solid #e9ecef;background:#f8f9fa;color:#b2bec3;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+    .gbtn.active{background:rgba(0,184,148,0.08);border-color:rgba(0,184,148,0.4);color:#00b894;}
 
-    /* CONSEILS */
-    .conseils{display:flex;flex-direction:column;gap:8px;}
-    .conseil{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:11px;padding:12px 14px;font-size:13px;color:rgba(240,240,245,0.65);line-height:1.5;display:flex;gap:10px;align-items:flex-start;}
-    .conseil-icon{font-size:16px;flex-shrink:0;}
+    .tag{display:inline-block;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;margin-left:6px;}
+    .tag-green{background:rgba(0,184,148,0.1);color:#00b894;}
+    .tag-blue{background:rgba(74,144,226,0.1);color:#4a90e2;}
+    .tag-orange{background:rgba(253,168,75,0.1);color:#fda84b;}
+    .tag-red{background:rgba(255,107,107,0.1);color:#ff6b6b;}
 
-    /* RESET */
-    .btn-reset{width:100%;padding:11px;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:11px;color:rgba(240,240,245,0.35);font-size:13px;cursor:pointer;transition:all 0.2s;font-family:inherit;}
-    .btn-reset:hover{border-color:rgba(255,124,111,0.3);color:#ff9d94;}
+    /* CONVERTISSEUR */
+    .conv-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+    .conv-tab{padding:6px 14px;border-radius:20px;border:1.5px solid #e9ecef;background:#f8f9fa;color:#636e72;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+    .conv-tab.active{background:rgba(0,184,148,0.1);border-color:rgba(0,184,148,0.35);color:#00b894;}
+    .conv-panel{display:none;}
+    .conv-panel.active{display:block;animation:fadeIn 0.25s ease;}
+    .conv-result{background:linear-gradient(135deg,rgba(0,184,148,0.08),rgba(0,206,201,0.05));border:1.5px solid rgba(0,184,148,0.2);border-radius:11px;padding:16px;text-align:center;margin-top:12px;}
+    .conv-val{font-size:32px;font-weight:300;color:#00b894;}
+    .conv-lbl{font-size:12px;color:#636e72;margin-top:4px;}
 
-    footer{margin-top:auto;padding:20px;text-align:center;font-size:11px;color:rgba(240,240,245,0.15);}
+    /* BÉBÉ */
+    .semaine-badge{display:inline-block;background:linear-gradient(135deg,#fd79a8,#e84393);color:#fff;font-size:28px;font-weight:200;padding:16px 28px;border-radius:16px;margin:10px 0;}
+
+    /* DATES */
+    .date-result-big{font-size:48px;font-weight:200;color:#00b894;text-align:center;padding:12px 0;}
+
+    /* PROGRAMME */
+    .day-card{background:#f8f9fa;border:1.5px solid #e9ecef;border-radius:12px;padding:14px;margin-bottom:10px;}
+    .day-title{font-size:12px;font-weight:700;color:#636e72;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;}
+    .repas-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:8px;}
+    .repas-name{font-size:10px;color:#b2bec3;min-width:65px;text-transform:uppercase;letter-spacing:0.08em;margin-top:3px;}
+    .repas-detail{font-size:13px;color:#2d3436;flex:1;line-height:1.4;}
+    .repas-kcal{font-size:11px;color:#00b894;white-space:nowrap;font-weight:600;}
+
+    /* JOURNAL */
+    .aliment-search{position:relative;}
+    .aliment-list{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #e9ecef;border-radius:10px;z-index:50;max-height:180px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+    .aliment-item{padding:9px 13px;cursor:pointer;font-size:13px;display:flex;justify-content:space-between;border-bottom:1px solid #f0f2f5;}
+    .aliment-item:hover{background:#f8f9fa;}
+
+    /* GAUGE */
+    .gauge{width:100%;height:12px;border-radius:99px;background:linear-gradient(90deg,#74b9ff 0%,#55efc4 25%,#ffeaa7 50%,#fdcb6e 75%,#e17055 100%);position:relative;margin:10px 0 6px;}
+    .gauge-cur{position:absolute;top:-5px;width:4px;height:22px;background:#2d3436;border-radius:2px;transform:translateX(-50%);transition:left 0.8s cubic-bezier(.34,1.56,.64,1);}
+    .gauge-lbl{display:flex;justify-content:space-between;font-size:9px;color:#b2bec3;}
+
+    footer{text-align:center;padding:20px;font-size:11px;color:#b2bec3;background:#fff;border-top:1px solid #f0f2f5;margin-top:20px;}
 
     @media(max-width:480px){
       .fields{grid-template-columns:1fr;}
-      .metrics{grid-template-columns:1fr 1fr;}
-      .activ-name{min-width:110px;font-size:12px;}
+      .res-grid{grid-template-columns:1fr 1fr;}
+      .bar-name{min-width:100px;font-size:11px;}
+      .nav-tab{padding:11px 10px;font-size:12px;}
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">🔥 Calorie<span>Check</span></div>
-  <div class="badge">100% gratuit</div>
+  <div class="logo">🧮 CalorieCheck<span style="color:#00b894">.fr</span></div>
+  <span class="logo-badge">100% gratuit</span>
 </header>
 
-<main>
+<nav class="nav">
+  <button class="nav-tab active" onclick="goPage('sante',this)">⚖️ Santé</button>
+  <button class="nav-tab" onclick="goPage('maison',this)">🏠 Maison</button>
+  <button class="nav-tab" onclick="goPage('finance',this)">💰 Finance</button>
+  <button class="nav-tab" onclick="goPage('auto',this)">🚗 Auto</button>
+  <button class="nav-tab" onclick="goPage('convert',this)">📐 Convertir</button>
+  <button class="nav-tab" onclick="goPage('bebe',this)">🍼 Bébé</button>
+  <button class="nav-tab" onclick="goPage('dates',this)">📅 Dates</button>
+</nav>
 
-  <!-- FORMULAIRE -->
-  <div class="card" id="formCard">
-    <div class="card-title">📊 Vos informations</div>
-
-    <div class="gender-row">
-      <button class="gender-btn active" id="btnH" onclick="setGenre('H')">👨 Homme</button>
-      <button class="gender-btn" id="btnF" onclick="setGenre('F')">👩 Femme</button>
+<!-- ========== SANTÉ ========== -->
+<div class="page active" id="page-sante">
+  <div class="card" id="s-form">
+    <div class="card-title"><span>📊</span> IMC & Besoins caloriques</div>
+    <div class="gbtn-row">
+      <button class="gbtn active" id="sbH" onclick="setSG('H')">👨 Homme</button>
+      <button class="gbtn" id="sbF" onclick="setSG('F')">👩 Femme</button>
     </div>
-
     <div class="fields">
-      <div class="field">
-        <label>Âge (ans)</label>
-        <input type="number" id="age" placeholder="Ex : 25" min="10" max="100"/>
-      </div>
-      <div class="field">
-        <label>Taille (cm)</label>
-        <input type="number" id="taille" placeholder="Ex : 175" min="100" max="250"/>
-      </div>
-      <div class="field">
-        <label>Poids (kg)</label>
-        <input type="number" id="poids" placeholder="Ex : 70" min="30" max="300"/>
-      </div>
-      <div class="field">
-        <label>Activité physique</label>
-        <select id="activite">
+      <div class="field"><label>Âge (ans)</label><input class="inp" type="number" id="s-age" placeholder="25"/></div>
+      <div class="field"><label>Taille (cm)</label><input class="inp" type="number" id="s-taille" placeholder="175"/></div>
+      <div class="field"><label>Poids (kg)</label><input class="inp" type="number" id="s-poids" placeholder="70"/></div>
+      <div class="field"><label>Activité</label>
+        <select class="inp" id="s-act">
           <option value="1.2">🛋️ Sédentaire</option>
-          <option value="1.375">🚶 Légère (1-3j/sem)</option>
-          <option value="1.55" selected>🏃 Modérée (3-5j/sem)</option>
-          <option value="1.725">💪 Intense (6-7j/sem)</option>
+          <option value="1.375">🚶 Légère</option>
+          <option value="1.55" selected>🏃 Modérée</option>
+          <option value="1.725">💪 Intense</option>
           <option value="1.9">🏋️ Très intense</option>
         </select>
       </div>
     </div>
-
-    <div class="field" style="margin-top:14px;">
-      <label>Objectif</label>
-      <select id="objectif">
-        <option value="deficit">⬇️ Perdre du poids</option>
-        <option value="maintien" selected>⚖️ Maintenir mon poids</option>
+    <div class="field" style="margin-top:12px;"><label>Objectif</label>
+      <select class="inp" id="s-obj">
+        <option value="perte">⬇️ Perdre du poids</option>
+        <option value="maintien" selected>⚖️ Maintenir</option>
         <option value="surplus">⬆️ Prendre de la masse</option>
       </select>
     </div>
-
-    <button class="btn-calc" onclick="calculer()" style="margin-top:18px;">🔥 Calculer mes besoins</button>
+    <button class="btn-main" onclick="calcSante()">Calculer mon IMC</button>
   </div>
-
-  <!-- RÉSULTATS -->
-  <div class="results" id="results">
-
-    <!-- IMC -->
+  <div id="s-res" style="display:none;animation:fadeIn 0.4s ease;">
     <div class="card">
-      <div class="card-title">⚖️ Mon IMC</div>
-      <div class="imc-wrap">
-        <div class="imc-number" id="imcVal">--</div>
-        <div class="imc-label" id="imcLabel" style="color:#81c784;">--</div>
-        <div class="gauge">
-          <div class="gauge-cursor" id="gaugeCursor" style="left:50%;"></div>
-        </div>
-        <div class="gauge-labels">
-          <span>Maigreur</span><span>Normal</span><span>Surpoids</span><span>Obésité</span>
-        </div>
+      <div class="card-title"><span>⚖️</span> Mon IMC</div>
+      <div style="text-align:center;">
+        <div style="font-size:60px;font-weight:200;line-height:1;" id="r-imc">--</div>
+        <div style="font-size:14px;font-weight:700;margin:4px 0 12px;" id="r-imc-lbl">--</div>
+        <div class="gauge"><div class="gauge-cur" id="r-gauge"></div></div>
+        <div class="gauge-lbl"><span>Maigreur</span><span>Normal</span><span>Surpoids</span><span>Obésité</span></div>
       </div>
     </div>
-
-    <!-- MÉTRIQUES -->
     <div class="card">
-      <div class="card-title">📈 Mes chiffres clés</div>
-      <div class="metrics">
-        <div class="metric">
-          <div class="metric-val" id="calMaintien">--</div>
-          <div class="metric-lbl">Calories/jour</div>
-          <div class="metric-sub" id="calSub">maintien</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val" id="calObjectif">--</div>
-          <div class="metric-lbl">Objectif</div>
-          <div class="metric-sub" id="objSub">--</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val" id="poidsIdeal">--</div>
-          <div class="metric-lbl">Poids idéal</div>
-          <div class="metric-sub">kg</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val" id="metabolisme">--</div>
-          <div class="metric-lbl">Métabolisme</div>
-          <div class="metric-sub">kcal base</div>
-        </div>
+      <div class="card-title"><span>📈</span> Chiffres clés</div>
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="r-cal">--</div><div class="res-lbl">Calories/jour</div><div class="res-sub" id="r-cal-lbl">objectif</div></div>
+        <div class="res-box"><div class="res-val" id="r-tdee">--</div><div class="res-lbl">Maintien</div><div class="res-sub">kcal/jour</div></div>
+        <div class="res-box"><div class="res-val" id="r-pideal">--</div><div class="res-lbl">Poids idéal</div><div class="res-sub">kg</div></div>
+        <div class="res-box"><div class="res-val" id="r-bmr">--</div><div class="res-lbl">Métabolisme</div><div class="res-sub">base kcal</div></div>
       </div>
     </div>
-
-    <!-- CALORIES PAR ACTIVITÉ -->
     <div class="card">
-      <div class="card-title">🏃 Calories brûlées par activité</div>
-      <div class="activ-list" id="activList"></div>
+      <div class="card-title"><span>🏃</span> Calories brûlées / 30 min</div>
+      <div id="r-acts"></div>
     </div>
-
-    <!-- MACROS -->
     <div class="card">
-      <div class="card-title">🥗 Répartition recommandée</div>
-      <div class="activ-list" id="macroList"></div>
+      <div class="card-title"><span>💡</span> Conseils personnalisés</div>
+      <div id="r-tips"></div>
     </div>
-
-    <!-- CONSEILS -->
-    <div class="card">
-      <div class="card-title">💡 Conseils personnalisés</div>
-      <div class="conseils" id="conseilsList"></div>
-    </div>
-
-    <button class="btn-reset" onclick="resetForm()">↺ Nouveau calcul</button>
+    <button class="btn-sec" onclick="document.getElementById('s-form').style.display='block';document.getElementById('s-res').style.display='none';">↺ Nouveau calcul</button>
   </div>
 
-</main>
+  <!-- Hydratation -->
+  <div class="card" style="margin-top:8px;">
+    <div class="card-title"><span>💧</span> Besoins en eau</div>
+    <div class="fields">
+      <div class="field"><label>Poids (kg)</label><input class="inp" type="number" id="e-p" placeholder="70"/></div>
+      <div class="field"><label>Activité</label>
+        <select class="inp" id="e-a">
+          <option value="0">🛋️ Sédentaire</option>
+          <option value="0.3">🚶 Légère</option>
+          <option value="0.6" selected>🏃 Modérée</option>
+          <option value="1.0">💪 Intense</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-main" onclick="calcEau()">Calculer</button>
+    <div id="e-res" style="display:none;text-align:center;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div style="font-size:52px;font-weight:200;color:#74b9ff;" id="e-l">--</div>
+      <div style="color:#636e72;font-size:14px;">litres par jour · <span style="color:#74b9ff;font-weight:700;" id="e-v">--</span> verres de 25cl</div>
+    </div>
+  </div>
+</div>
 
-<footer>CalorieCheck — Calculateur IMC & calories gratuit · Outil en ligne</footer>
+<!-- ========== MAISON ========== -->
+<div class="page" id="page-maison">
+  <!-- Peinture -->
+  <div class="card">
+    <div class="card-title"><span>🎨</span> Surface à peindre</div>
+    <div class="fields">
+      <div class="field"><label>Longueur pièce (m)</label><input class="inp" type="number" id="p-l" placeholder="4" step="0.1"/></div>
+      <div class="field"><label>Largeur pièce (m)</label><input class="inp" type="number" id="p-la" placeholder="3.5" step="0.1"/></div>
+      <div class="field"><label>Hauteur plafond (m)</label><input class="inp" type="number" id="p-h" placeholder="2.5" step="0.1"/></div>
+      <div class="field"><label>Nb de portes</label><input class="inp" type="number" id="p-p" placeholder="1" value="1"/></div>
+      <div class="field"><label>Nb de fenêtres</label><input class="inp" type="number" id="p-f" placeholder="1" value="1"/></div>
+      <div class="field"><label>Nombre de couches</label><input class="inp" type="number" id="p-c" placeholder="2" value="2"/></div>
+    </div>
+    <div class="field" style="margin-top:10px;"><label>Rendement peinture (m²/L)</label>
+      <select class="inp" id="p-r">
+        <option value="10">Peinture standard (~10 m²/L)</option>
+        <option value="8">Peinture épaisse (~8 m²/L)</option>
+        <option value="12">Peinture diluée (~12 m²/L)</option>
+      </select>
+    </div>
+    <button class="btn-main" onclick="calcPeinture()">Calculer la peinture</button>
+    <div id="p-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="p-surface">--</div><div class="res-lbl">Surface nette</div><div class="res-sub">m²</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="p-litres">--</div><div class="res-lbl">Litres nécessaires</div><div class="res-sub">peinture</div></div>
+        <div class="res-box"><div class="res-val" id="p-pots5">--</div><div class="res-lbl">Pots de 5L</div><div class="res-sub">à acheter</div></div>
+        <div class="res-box"><div class="res-val" id="p-pots2">--</div><div class="res-lbl">Pots de 2.5L</div><div class="res-sub">alternative</div></div>
+      </div>
+      <div class="conseil"><span>💡</span><span id="p-conseil">--</span></div>
+    </div>
+  </div>
+
+  <!-- Carrelage -->
+  <div class="card">
+    <div class="card-title"><span>🔲</span> Carrelage & Parquet</div>
+    <div class="fields">
+      <div class="field"><label>Longueur (m)</label><input class="inp" type="number" id="c-l" placeholder="5" step="0.1"/></div>
+      <div class="field"><label>Largeur (m)</label><input class="inp" type="number" id="c-la" placeholder="4" step="0.1"/></div>
+      <div class="field"><label>% chutes / pertes</label><input class="inp" type="number" id="c-ch" placeholder="10" value="10"/></div>
+      <div class="field"><label>Prix au m²</label><input class="inp" type="number" id="c-px" placeholder="25" step="0.5"/></div>
+    </div>
+    <button class="btn-main" onclick="calcCarrelage()">Calculer</button>
+    <div id="c-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="c-surf">--</div><div class="res-lbl">Surface nette</div><div class="res-sub">m²</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="c-acheter">--</div><div class="res-lbl">À acheter</div><div class="res-sub">m² avec chutes</div></div>
+        <div class="res-box"><div class="res-val" id="c-prix">--</div><div class="res-lbl">Coût estimé</div><div class="res-sub">€</div></div>
+        <div class="res-box"><div class="res-val" id="c-surplus">--</div><div class="res-lbl">Surplus</div><div class="res-sub">m² de marge</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Béton -->
+  <div class="card">
+    <div class="card-title"><span>🏗️</span> Volume de béton / mortier</div>
+    <div class="fields">
+      <div class="field"><label>Longueur (m)</label><input class="inp" type="number" id="b-l" placeholder="3" step="0.1"/></div>
+      <div class="field"><label>Largeur (m)</label><input class="inp" type="number" id="b-la" placeholder="2" step="0.1"/></div>
+      <div class="field"><label>Épaisseur (cm)</label><input class="inp" type="number" id="b-e" placeholder="10"/></div>
+      <div class="field"><label>Type</label>
+        <select class="inp" id="b-t">
+          <option value="dalle">Dalle béton</option>
+          <option value="mortier">Mortier</option>
+          <option value="chape">Chape</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-main" onclick="calcBeton()">Calculer</button>
+    <div id="b-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="b-vol">--</div><div class="res-lbl">Volume</div><div class="res-sub">m³</div></div>
+        <div class="res-box"><div class="res-val" id="b-sacs">--</div><div class="res-lbl">Sacs de 35kg</div><div class="res-sub">à acheter</div></div>
+        <div class="res-box"><div class="res-val" id="b-ciment">--</div><div class="res-lbl">Ciment</div><div class="res-sub">kg</div></div>
+        <div class="res-box"><div class="res-val" id="b-sable">--</div><div class="res-lbl">Sable</div><div class="res-sub">kg</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== FINANCE ========== -->
+<div class="page" id="page-finance">
+  <!-- Crédit -->
+  <div class="card">
+    <div class="card-title"><span>🏦</span> Simulateur de crédit immobilier</div>
+    <div class="fields">
+      <div class="field"><label>Montant emprunté (€)</label><input class="inp" type="number" id="cr-m" placeholder="200000"/></div>
+      <div class="field"><label>Durée (années)</label><input class="inp" type="number" id="cr-d" placeholder="20"/></div>
+      <div class="field"><label>Taux annuel (%)</label><input class="inp" type="number" id="cr-t" placeholder="3.5" step="0.1"/></div>
+      <div class="field"><label>Assurance mensuelle (€)</label><input class="inp" type="number" id="cr-a" placeholder="50" value="0"/></div>
+    </div>
+    <button class="btn-main" onclick="calcCredit()">Calculer mes mensualités</button>
+    <div id="cr-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="cr-mens">--</div><div class="res-lbl">Mensualité</div><div class="res-sub">€/mois</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="cr-total">--</div><div class="res-lbl">Coût total</div><div class="res-sub">€</div></div>
+        <div class="res-box"><div class="res-val" id="cr-interets">--</div><div class="res-lbl">Intérêts</div><div class="res-sub">€ au total</div></div>
+        <div class="res-box"><div class="res-val" id="cr-ratio">--</div><div class="res-lbl">Taux effort</div><div class="res-sub">% revenus</div></div>
+      </div>
+      <div class="conseil"><span>💡</span><span id="cr-conseil">--</span></div>
+    </div>
+  </div>
+
+  <!-- Épargne -->
+  <div class="card">
+    <div class="card-title"><span>💹</span> Simulateur d'épargne</div>
+    <div class="fields">
+      <div class="field"><label>Capital de départ (€)</label><input class="inp" type="number" id="ep-c" placeholder="5000" value="0"/></div>
+      <div class="field"><label>Versement mensuel (€)</label><input class="inp" type="number" id="ep-v" placeholder="200"/></div>
+      <div class="field"><label>Taux annuel (%)</label><input class="inp" type="number" id="ep-t" placeholder="4" step="0.1"/></div>
+      <div class="field"><label>Durée (années)</label><input class="inp" type="number" id="ep-d" placeholder="10"/></div>
+    </div>
+    <button class="btn-main" onclick="calcEpargne()">Simuler mon épargne</button>
+    <div id="ep-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="ep-total">--</div><div class="res-lbl">Capital final</div><div class="res-sub">€</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="ep-gains">--</div><div class="res-lbl">Intérêts gagnés</div><div class="res-sub">€</div></div>
+        <div class="res-box"><div class="res-val" id="ep-verse">--</div><div class="res-lbl">Total versé</div><div class="res-sub">€</div></div>
+        <div class="res-box"><div class="res-val" id="ep-mult">--</div><div class="res-lbl">Multiplicateur</div><div class="res-sub">× votre mise</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Salaire -->
+  <div class="card">
+    <div class="card-title"><span>💼</span> Salaire brut → net (France)</div>
+    <div class="fields">
+      <div class="field"><label>Salaire brut mensuel (€)</label><input class="inp" type="number" id="sal-b" placeholder="2500"/></div>
+      <div class="field"><label>Statut</label>
+        <select class="inp" id="sal-s">
+          <option value="0.22">Salarié cadre (~22%)</option>
+          <option value="0.20">Salarié non-cadre (~20%)</option>
+          <option value="0.45">Indépendant / Auto (~45%)</option>
+          <option value="0.25">Fonctionnaire (~25%)</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-main" onclick="calcSalaire()">Convertir brut / net</button>
+    <div id="sal-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="sal-net">--</div><div class="res-lbl">Net mensuel</div><div class="res-sub">€/mois</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="sal-an">--</div><div class="res-lbl">Net annuel</div><div class="res-sub">€/an</div></div>
+        <div class="res-box"><div class="res-val" id="sal-cot">--</div><div class="res-lbl">Cotisations</div><div class="res-sub">€/mois</div></div>
+        <div class="res-box"><div class="res-val" id="sal-h">--</div><div class="res-lbl">Taux horaire</div><div class="res-sub">€/heure</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== AUTO ========== -->
+<div class="page" id="page-auto">
+  <!-- Coût trajet -->
+  <div class="card">
+    <div class="card-title"><span>⛽</span> Coût d'un trajet</div>
+    <div class="fields">
+      <div class="field"><label>Distance (km)</label><input class="inp" type="number" id="a-km" placeholder="150"/></div>
+      <div class="field"><label>Prix carburant (€/L)</label><input class="inp" type="number" id="a-px" placeholder="1.85" step="0.01" value="1.85"/></div>
+      <div class="field"><label>Consommation (L/100km)</label><input class="inp" type="number" id="a-conso" placeholder="6.5" step="0.1" value="6.5"/></div>
+      <div class="field"><label>Nb de passagers</label><input class="inp" type="number" id="a-pass" placeholder="1" value="1" min="1"/></div>
+    </div>
+    <button class="btn-main" onclick="calcTrajet()">Calculer le coût</button>
+    <div id="a-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="a-total">--</div><div class="res-lbl">Coût total</div><div class="res-sub">€</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="a-pp">--</div><div class="res-lbl">Par personne</div><div class="res-sub">€</div></div>
+        <div class="res-box"><div class="res-val" id="a-litres">--</div><div class="res-lbl">Litres utilisés</div><div class="res-sub">L</div></div>
+        <div class="res-box"><div class="res-val" id="a-co2">--</div><div class="res-lbl">CO₂ émis</div><div class="res-sub">kg</div></div>
+      </div>
+      <div class="conseil"><span>🌿</span><span id="a-conseil">--</span></div>
+    </div>
+  </div>
+
+  <!-- Coût annuel voiture -->
+  <div class="card">
+    <div class="card-title"><span>🚗</span> Coût annuel de ma voiture</div>
+    <div class="fields">
+      <div class="field"><label>Km parcourus / an</label><input class="inp" type="number" id="av-km" placeholder="15000" value="15000"/></div>
+      <div class="field"><label>Consommation (L/100)</label><input class="inp" type="number" id="av-c" placeholder="7" step="0.1"/></div>
+      <div class="field"><label>Assurance (€/mois)</label><input class="inp" type="number" id="av-ass" placeholder="80"/></div>
+      <div class="field"><label>Entretien (€/an)</label><input class="inp" type="number" id="av-ent" placeholder="500" value="500"/></div>
+      <div class="field"><label>Crédit (€/mois)</label><input class="inp" type="number" id="av-cr" placeholder="0" value="0"/></div>
+      <div class="field"><label>Prix carburant (€/L)</label><input class="inp" type="number" id="av-px" placeholder="1.85" value="1.85" step="0.01"/></div>
+    </div>
+    <button class="btn-main" onclick="calcVoiture()">Calculer</button>
+    <div id="av-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="av-total">--</div><div class="res-lbl">Coût annuel</div><div class="res-sub">€/an</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="av-mois">--</div><div class="res-lbl">Coût mensuel</div><div class="res-sub">€/mois</div></div>
+        <div class="res-box"><div class="res-val" id="av-km-cout">--</div><div class="res-lbl">Coût / km</div><div class="res-sub">€/km</div></div>
+        <div class="res-box"><div class="res-val" id="av-carb">--</div><div class="res-lbl">Carburant</div><div class="res-sub">€/an</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CONVERTISSEUR ========== -->
+<div class="page" id="page-convert">
+  <div class="card">
+    <div class="card-title"><span>📐</span> Convertisseur universel</div>
+    <div class="conv-tabs">
+      <button class="conv-tab active" onclick="switchConv('long',this)">📏 Longueur</button>
+      <button class="conv-tab" onclick="switchConv('poids',this)">⚖️ Poids</button>
+      <button class="conv-tab" onclick="switchConv('temp',this)">🌡️ Température</button>
+      <button class="conv-tab" onclick="switchConv('vol',this)">🧪 Volume</button>
+      <button class="conv-tab" onclick="switchConv('surf',this)">📐 Surface</button>
+      <button class="conv-tab" onclick="switchConv('devise',this)">💶 Devises</button>
+      <button class="conv-tab" onclick="switchConv('habit',this)">👕 Vêtements</button>
+    </div>
+
+    <!-- Longueur -->
+    <div class="conv-panel active" id="cv-long">
+      <div class="fields">
+        <div class="field"><label>Valeur</label><input class="inp" type="number" id="l-val" placeholder="100" oninput="convLong()"/></div>
+        <div class="field"><label>Unité source</label>
+          <select class="inp" id="l-from" onchange="convLong()">
+            <option value="mm">Millimètre (mm)</option>
+            <option value="cm">Centimètre (cm)</option>
+            <option value="m" selected>Mètre (m)</option>
+            <option value="km">Kilomètre (km)</option>
+            <option value="in">Pouce (inch)</option>
+            <option value="ft">Pied (foot)</option>
+            <option value="yd">Yard</option>
+            <option value="mi">Mile</option>
+          </select>
+        </div>
+        <div class="field"><label>Convertir en</label>
+          <select class="inp" id="l-to" onchange="convLong()">
+            <option value="mm">Millimètre (mm)</option>
+            <option value="cm">Centimètre (cm)</option>
+            <option value="m">Mètre (m)</option>
+            <option value="km">Kilomètre (km)</option>
+            <option value="in" selected>Pouce (inch)</option>
+            <option value="ft">Pied (foot)</option>
+            <option value="yd">Yard</option>
+            <option value="mi">Mile</option>
+          </select>
+        </div>
+      </div>
+      <div class="conv-result"><div class="conv-val" id="l-res">--</div><div class="conv-lbl" id="l-lbl">--</div></div>
+    </div>
+
+    <!-- Poids -->
+    <div class="conv-panel" id="cv-poids">
+      <div class="fields">
+        <div class="field"><label>Valeur</label><input class="inp" type="number" id="po-val" placeholder="70" oninput="convPoids()"/></div>
+        <div class="field"><label>Unité source</label>
+          <select class="inp" id="po-from" onchange="convPoids()">
+            <option value="g">Gramme (g)</option>
+            <option value="kg" selected>Kilogramme (kg)</option>
+            <option value="t">Tonne (t)</option>
+            <option value="oz">Once (oz)</option>
+            <option value="lb">Livre (lb)</option>
+          </select>
+        </div>
+        <div class="field"><label>Convertir en</label>
+          <select class="inp" id="po-to" onchange="convPoids()">
+            <option value="g">Gramme (g)</option>
+            <option value="kg">Kilogramme (kg)</option>
+            <option value="t">Tonne (t)</option>
+            <option value="oz">Once (oz)</option>
+            <option value="lb" selected>Livre (lb)</option>
+          </select>
+        </div>
+      </div>
+      <div class="conv-result"><div class="conv-val" id="po-res">--</div><div class="conv-lbl" id="po-lbl">--</div></div>
+    </div>
+
+    <!-- Température -->
+    <div class="conv-panel" id="cv-temp">
+      <div class="fields">
+        <div class="field"><label>Valeur</label><input class="inp" type="number" id="t-val" placeholder="20" oninput="convTemp()"/></div>
+        <div class="field"><label>Unité source</label>
+          <select class="inp" id="t-from" onchange="convTemp()">
+            <option value="C" selected>Celsius (°C)</option>
+            <option value="F">Fahrenheit (°F)</option>
+            <option value="K">Kelvin (K)</option>
+          </select>
+        </div>
+        <div class="field"><label>Convertir en</label>
+          <select class="inp" id="t-to" onchange="convTemp()">
+            <option value="C">Celsius (°C)</option>
+            <option value="F" selected>Fahrenheit (°F)</option>
+            <option value="K">Kelvin (K)</option>
+          </select>
+        </div>
+      </div>
+      <div class="conv-result"><div class="conv-val" id="t-res">--</div><div class="conv-lbl" id="t-lbl">--</div></div>
+    </div>
+
+    <!-- Volume -->
+    <div class="conv-panel" id="cv-vol">
+      <div class="fields">
+        <div class="field"><label>Valeur</label><input class="inp" type="number" id="v-val" placeholder="1" oninput="convVol()"/></div>
+        <div class="field"><label>Unité source</label>
+          <select class="inp" id="v-from" onchange="convVol()">
+            <option value="ml">Millilitre (ml)</option>
+            <option value="cl">Centilitre (cl)</option>
+            <option value="l" selected>Litre (L)</option>
+            <option value="m3">Mètre cube (m³)</option>
+            <option value="floz">Fl. once (fl oz)</option>
+            <option value="pt">Pinte (pt)</option>
+            <option value="gal">Gallon (US)</option>
+          </select>
+        </div>
+        <div class="field"><label>Convertir en</label>
+          <select class="inp" id="v-to" onchange="convVol()">
+            <option value="ml">Millilitre (ml)</option>
+            <option value="cl">Centilitre (cl)</option>
+            <option value="l">Litre (L)</option>
+            <option value="m3">Mètre cube (m³)</option>
+            <option value="floz" selected>Fl. once (fl oz)</option>
+            <option value="pt">Pinte (pt)</option>
+            <option value="gal">Gallon (US)</option>
+          </select>
+        </div>
+      </div>
+      <div class="conv-result"><div class="conv-val" id="v-res">--</div><div class="conv-lbl" id="v-lbl">--</div></div>
+    </div>
+
+    <!-- Surface -->
+    <div class="conv-panel" id="cv-surf">
+      <div class="fields">
+        <div class="field"><label>Valeur</label><input class="inp" type="number" id="su-val" placeholder="100" oninput="convSurf()"/></div>
+        <div class="field"><label>Unité source</label>
+          <select class="inp" id="su-from" onchange="convSurf()">
+            <option value="cm2">cm²</option>
+            <option value="m2" selected>m²</option>
+            <option value="ha">Hectare (ha)</option>
+            <option value="km2">km²</option>
+            <option value="ft2">Pied² (ft²)</option>
+            <option value="acre">Acre</option>
+          </select>
+        </div>
+        <div class="field"><label>Convertir en</label>
+          <select class="inp" id="su-to" onchange="convSurf()">
+            <option value="cm2">cm²</option>
+            <option value="m2">m²</option>
+            <option value="ha">Hectare (ha)</option>
+            <option value="km2">km²</option>
+            <option value="ft2" selected>Pied² (ft²)</option>
+            <option value="acre">Acre</option>
+          </select>
+        </div>
+      </div>
+      <div class="conv-result"><div class="conv-val" id="su-res">--</div><div class="conv-lbl" id="su-lbl">--</div></div>
+    </div>
+
+    <!-- Devises -->
+    <div class="conv-panel" id="cv-devise">
+      <p style="font-size:11px;color:#b2bec3;margin-bottom:12px;">⚠️ Taux indicatifs — mettez à jour régulièrement</p>
+      <div class="fields">
+        <div class="field"><label>Montant</label><input class="inp" type="number" id="d-val" placeholder="100" oninput="convDevise()"/></div>
+        <div class="field"><label>Devise source</label>
+          <select class="inp" id="d-from" onchange="convDevise()">
+            <option value="EUR" selected>🇪🇺 Euro (EUR)</option>
+            <option value="USD">🇺🇸 Dollar US (USD)</option>
+            <option value="GBP">🇬🇧 Livre sterling (GBP)</option>
+            <option value="CHF">🇨🇭 Franc suisse (CHF)</option>
+            <option value="CAD">🇨🇦 Dollar CA (CAD)</option>
+            <option value="JPY">🇯🇵 Yen (JPY)</option>
+            <option value="MAD">🇲🇦 Dirham (MAD)</option>
+            <option value="DZD">🇩🇿 Dinar algérien</option>
+            <option value="TND">🇹🇳 Dinar tunisien</option>
+            <option value="XOF">🌍 Franc CFA</option>
+          </select>
+        </div>
+        <div class="field"><label>Convertir en</label>
+          <select class="inp" id="d-to" onchange="convDevise()">
+            <option value="EUR">🇪🇺 Euro (EUR)</option>
+            <option value="USD" selected>🇺🇸 Dollar US (USD)</option>
+            <option value="GBP">🇬🇧 Livre sterling (GBP)</option>
+            <option value="CHF">🇨🇭 Franc suisse (CHF)</option>
+            <option value="CAD">🇨🇦 Dollar CA (CAD)</option>
+            <option value="JPY">🇯🇵 Yen (JPY)</option>
+            <option value="MAD">🇲🇦 Dirham (MAD)</option>
+            <option value="DZD">🇩🇿 Dinar algérien</option>
+            <option value="TND">🇹🇳 Dinar tunisien</option>
+            <option value="XOF">🌍 Franc CFA</option>
+          </select>
+        </div>
+      </div>
+      <div class="conv-result"><div class="conv-val" id="d-res">--</div><div class="conv-lbl" id="d-lbl">--</div></div>
+    </div>
+
+    <!-- Vêtements -->
+    <div class="conv-panel" id="cv-habit">
+      <div class="fields">
+        <div class="field"><label>Type</label>
+          <select class="inp" id="h-type" onchange="convHabit()">
+            <option value="top">Haut / T-shirt</option>
+            <option value="pantalon">Pantalon</option>
+            <option value="chaussure">Chaussures</option>
+          </select>
+        </div>
+        <div class="field"><label>Taille FR / EU</label>
+          <select class="inp" id="h-val" onchange="convHabit()">
+          </select>
+        </div>
+      </div>
+      <div id="h-res" style="margin-top:12px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== BÉBÉ ========== -->
+<div class="page" id="page-bebe">
+  <!-- DPA -->
+  <div class="card">
+    <div class="card-title"><span>🍼</span> Date prévue d'accouchement (DPA)</div>
+    <div class="fields">
+      <div class="field" style="grid-column:span 2;"><label>Date de début de vos dernières règles (DDR)</label><input class="inp" type="date" id="ddr"/></div>
+    </div>
+    <button class="btn-main" onclick="calcDPA()">Calculer la DPA</button>
+    <div id="dpa-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="dpa-date" style="font-size:18px;">--</div><div class="res-lbl">Date prévue</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="dpa-sem">--</div><div class="res-lbl">Semaine actuelle</div><div class="res-sub">SA</div></div>
+        <div class="res-box"><div class="res-val" id="dpa-jours">--</div><div class="res-lbl">Jours restants</div></div>
+        <div class="res-box"><div class="res-val" id="dpa-trim">--</div><div class="res-lbl">Trimestre</div></div>
+      </div>
+      <div class="conseil"><span>📅</span><span id="dpa-info">--</span></div>
+    </div>
+  </div>
+
+  <!-- Ovulation -->
+  <div class="card">
+    <div class="card-title"><span>🌸</span> Calculateur d'ovulation</div>
+    <div class="fields">
+      <div class="field"><label>Date 1er jour dernières règles</label><input class="inp" type="date" id="ov-ddr"/></div>
+      <div class="field"><label>Durée cycle (jours)</label><input class="inp" type="number" id="ov-cycle" placeholder="28" value="28" min="21" max="45"/></div>
+    </div>
+    <button class="btn-main" onclick="calcOvulation()">Calculer</button>
+    <div id="ov-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="ov-date" style="font-size:16px;">--</div><div class="res-lbl">Ovulation prévue</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="ov-debut" style="font-size:14px;">--</div><div class="res-lbl">Début période fertile</div></div>
+        <div class="res-box"><div class="res-val" id="ov-fin" style="font-size:14px;">--</div><div class="res-lbl">Fin période fertile</div></div>
+        <div class="res-box"><div class="res-val" id="ov-proch" style="font-size:16px;">--</div><div class="res-lbl">Prochaines règles</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Poids bébé -->
+  <div class="card">
+    <div class="card-title"><span>👶</span> Poids bébé — courbe de croissance</div>
+    <div class="fields">
+      <div class="field"><label>Âge du bébé</label><input class="inp" type="number" id="bb-age" placeholder="6" min="0" max="24"/></div>
+      <div class="field"><label>Unité</label>
+        <select class="inp" id="bb-unit">
+          <option value="mois">Mois</option>
+          <option value="sem">Semaines (nné)</option>
+        </select>
+      </div>
+      <div class="field"><label>Poids actuel (kg)</label><input class="inp" type="number" id="bb-poids" placeholder="7.5" step="0.1"/></div>
+      <div class="field"><label>Sexe</label>
+        <select class="inp" id="bb-sexe">
+          <option value="G">Garçon</option>
+          <option value="F">Fille</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-main" onclick="calcBebe()">Analyser la croissance</button>
+    <div id="bb-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="bb-percentile">--</div><div class="res-lbl">Percentile</div></div>
+        <div class="res-box"><div class="res-val" id="bb-median">--</div><div class="res-lbl">Poids médian</div><div class="res-sub">kg (50ème %)</div></div>
+        <div class="res-box"><div class="res-val" id="bb-p10">--</div><div class="res-lbl">10ème %</div><div class="res-sub">kg</div></div>
+        <div class="res-box"><div class="res-val" id="bb-p90">--</div><div class="res-lbl">90ème %</div><div class="res-sub">kg</div></div>
+      </div>
+      <div class="conseil"><span>👶</span><span id="bb-info">--</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== DATES ========== -->
+<div class="page" id="page-dates">
+  <!-- Âge précis -->
+  <div class="card">
+    <div class="card-title"><span>🎂</span> Calculateur d'âge précis</div>
+    <div class="field"><label>Date de naissance</label><input class="inp" type="date" id="ag-dn" oninput="calcAge()"/></div>
+    <div id="ag-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="ag-ans">--</div><div class="res-lbl">Années</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="ag-mois">--</div><div class="res-lbl">Mois</div></div>
+        <div class="res-box"><div class="res-val" id="ag-jours">--</div><div class="res-lbl">Jours</div></div>
+        <div class="res-box"><div class="res-val" id="ag-total">--</div><div class="res-lbl">Total jours</div></div>
+      </div>
+      <div class="conseil"><span>🎉</span><span id="ag-prochain">--</span></div>
+    </div>
+  </div>
+
+  <!-- Jours entre 2 dates -->
+  <div class="card">
+    <div class="card-title"><span>📆</span> Jours entre deux dates</div>
+    <div class="fields">
+      <div class="field"><label>Date de début</label><input class="inp" type="date" id="jj-d1" oninput="calcJours()"/></div>
+      <div class="field"><label>Date de fin</label><input class="inp" type="date" id="jj-d2" oninput="calcJours()"/></div>
+    </div>
+    <div id="jj-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="jj-jours">--</div><div class="res-lbl">Jours</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="jj-sem">--</div><div class="res-lbl">Semaines</div></div>
+        <div class="res-box"><div class="res-val" id="jj-mois">--</div><div class="res-lbl">Mois</div></div>
+        <div class="res-box"><div class="res-val" id="jj-ans">--</div><div class="res-lbl">Années</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Date dans X jours -->
+  <div class="card">
+    <div class="card-title"><span>⏭️</span> Quelle date dans X jours ?</div>
+    <div class="fields">
+      <div class="field"><label>Date de départ</label><input class="inp" type="date" id="xj-d"/></div>
+      <div class="field"><label>Ajouter (jours)</label><input class="inp" type="number" id="xj-n" placeholder="30"/></div>
+    </div>
+    <button class="btn-main" onclick="calcDateX()">Calculer</button>
+    <div id="xj-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="conv-result"><div class="conv-val" id="xj-date">--</div><div class="conv-lbl" id="xj-jour">--</div></div>
+    </div>
+  </div>
+
+  <!-- Retraite -->
+  <div class="card">
+    <div class="card-title"><span>🏖️</span> Calculateur de retraite (France)</div>
+    <div class="fields">
+      <div class="field"><label>Année de naissance</label><input class="inp" type="number" id="ret-n" placeholder="1980" min="1950" max="2010"/></div>
+      <div class="field"><label>Trimestres validés</label><input class="inp" type="number" id="ret-t" placeholder="60" min="0" max="172"/></div>
+    </div>
+    <button class="btn-main" onclick="calcRetraite()">Calculer</button>
+    <div id="ret-res" style="display:none;margin-top:14px;animation:fadeIn 0.3s ease;">
+      <div class="res-grid">
+        <div class="res-box res-highlight"><div class="res-val" id="ret-age">--</div><div class="res-lbl">Âge départ</div><div class="res-sub">ans</div></div>
+        <div class="res-box res-highlight"><div class="res-val" id="ret-annee" style="font-size:20px;">--</div><div class="res-lbl">Année départ</div></div>
+        <div class="res-box"><div class="res-val" id="ret-manq">--</div><div class="res-lbl">Trimestres manquants</div></div>
+        <div class="res-box"><div class="res-val" id="ret-taux">--</div><div class="res-lbl">Taux plein</div><div class="res-sub">trimestres requis</div></div>
+      </div>
+      <div class="conseil"><span>💡</span><span id="ret-info">--</span></div>
+    </div>
+  </div>
+</div>
+
+<footer>CalorieCheck.fr — Calculateurs gratuits en ligne · Santé · Maison · Finance · Auto · Convertisseur · Bébé · Dates</footer>
 
 <script>
-var genre = "H";
-
-function setGenre(g) {
-  genre = g;
-  document.getElementById("btnH").className = "gender-btn" + (g==="H"?" active":"");
-  document.getElementById("btnF").className = "gender-btn" + (g==="F"?" active":"");
+// ============================================================
+// UTILS
+// ============================================================
+var sGenre = "H";
+function goPage(id,btn){
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll(".nav-tab").forEach(function(t){t.classList.remove("active");});
+  document.getElementById("page-"+id).classList.add("active");
+  btn.classList.add("active");
 }
+function setSG(g){sGenre=g;document.getElementById("sbH").className="gbtn"+(g==="H"?" active":"");document.getElementById("sbF").className="gbtn"+(g==="F"?" active":"");}
+function fmt(n,dec){var d=dec===undefined?0:dec;return parseFloat(n.toFixed(d)).toLocaleString("fr-FR");}
+function fmtDate(d){return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"});}
+function fmtDateLong(d){return d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});}
 
-function calculer() {
-  var age = parseFloat(document.getElementById("age").value);
-  var taille = parseFloat(document.getElementById("taille").value);
-  var poids = parseFloat(document.getElementById("poids").value);
-  var activite = parseFloat(document.getElementById("activite").value);
-  var objectif = document.getElementById("objectif").value;
-
-  if(!age||!taille||!poids||age<10||age>100||taille<100||taille>250||poids<30||poids>300) {
-    alert("Veuillez remplir tous les champs correctement.");
-    return;
-  }
-
-  // IMC
-  var imc = poids / ((taille/100)*(taille/100));
-  var imcR = Math.round(imc*10)/10;
-
-  // Métabolisme basal (Harris-Benedict révisé)
-  var bmr;
-  if(genre==="H") {
-    bmr = 88.362 + (13.397*poids) + (4.799*taille) - (5.677*age);
-  } else {
-    bmr = 447.593 + (9.247*poids) + (3.098*taille) - (4.330*age);
-  }
-  bmr = Math.round(bmr);
-
-  // TDEE (besoin total)
-  var tdee = Math.round(bmr * activite);
-
-  // Objectif
-  var calObj, objLabel, objColor;
-  if(objectif==="deficit") {
-    calObj = Math.round(tdee * 0.8);
-    objLabel = "Perte de poids";
-    objColor = "#4fc3f7";
-  } else if(objectif==="surplus") {
-    calObj = Math.round(tdee * 1.1);
-    objLabel = "Prise de masse";
-    objColor = "#81c784";
-  } else {
-    calObj = tdee;
-    objLabel = "Maintien";
-    objColor = "#ffb347";
-  }
-
-  // Poids idéal (formule de Lorentz)
-  var pideal;
-  if(genre==="H") pideal = taille - 100 - (taille-150)/4;
-  else pideal = taille - 100 - (taille-150)/2.5;
-  pideal = Math.round(pideal*10)/10;
-
-  // IMC label et couleur
-  var imcLabel, imcColor, gaugePos;
-  if(imc < 16.5){imcLabel="Dénutrition sévère";imcColor="#ef5350";gaugePos=5;}
-  else if(imc < 18.5){imcLabel="Maigreur";imcColor="#4fc3f7";gaugePos=12;}
-  else if(imc < 25){imcLabel="Poids normal ✅";imcColor="#81c784";gaugePos=37;}
-  else if(imc < 30){imcLabel="Surpoids";imcColor="#ffb74d";gaugePos=62;}
-  else if(imc < 35){imcLabel="Obésité modérée";imcColor="#ef5350";gaugePos=80;}
-  else{imcLabel="Obésité sévère";imcColor="#b71c1c";gaugePos=95;}
-
-  // Activités (calories brûlées en 30 min, proportionnel au poids)
-  var activites = [
-    {nom:"🚶 Marche",met:3.5},
-    {nom:"🚴 Vélo",met:7},
-    {nom:"🏊 Natation",met:8},
-    {nom:"🏃 Course",met:10},
-    {nom:"🏋️ Musculation",met:6},
-    {nom:"🧘 Yoga",met:2.5},
-  ];
-  var maxCal = 0;
-  var activData = activites.map(function(a){
-    var cal = Math.round(a.met * poids * 0.5);
-    if(cal>maxCal) maxCal=cal;
-    return {nom:a.nom, cal:cal};
-  });
-
-  // Macros
-  var protG = Math.round(calObj * 0.30 / 4);
-  var glucG = Math.round(calObj * 0.45 / 4);
-  var lipG  = Math.round(calObj * 0.25 / 9);
-  var macros = [
-    {nom:"🥩 Protéines",g:protG,cal:Math.round(calObj*0.30),pct:30},
-    {nom:"🍚 Glucides",g:glucG,cal:Math.round(calObj*0.45),pct:45},
-    {nom:"🥑 Lipides",g:lipG,cal:Math.round(calObj*0.25),pct:25},
-  ];
-
-  // Conseils personnalisés
-  var conseils = [];
-  if(imc < 18.5) {
-    conseils.push({icon:"🥗",txt:"Augmentez vos apports en protéines et en bonnes graisses (avocat, huile d'olive, noix) pour atteindre un poids sain."});
-    conseils.push({icon:"💊",txt:"Consultez un médecin ou un nutritionniste si votre maigreur est importante."});
-  } else if(imc < 25) {
-    conseils.push({icon:"✅",txt:"Votre poids est dans la norme ! Maintenez une alimentation équilibrée et une activité physique régulière."});
-    conseils.push({icon:"💧",txt:"Buvez au moins 1,5L d'eau par jour. La bonne hydratation optimise le métabolisme."});
-  } else {
-    conseils.push({icon:"🥦",txt:"Privilégiez les légumes, protéines maigres et glucides complexes. Évitez les sucres raffinés et la junk food."});
-    conseils.push({icon:"🏃",txt:"30 minutes de marche rapide par jour suffisent pour commencer à perdre du poids progressivement."});
-  }
-  if(objectif==="deficit") {
-    conseils.push({icon:"📉",txt:"Ne descendez jamais en dessous de "+Math.round(bmr)+" kcal/jour (votre métabolisme de base) : votre corps en a besoin pour fonctionner."});
-    conseils.push({icon:"⏰",txt:"Visez une perte de 0,5 à 1 kg par semaine maximum. Aller trop vite risque d'entraîner une reprise rapide."});
-  } else if(objectif==="surplus") {
-    conseils.push({icon:"💪",txt:"Associez l'excédent calorique à une musculation régulière pour que le surplus se transforme en muscle, pas en graisse."});
-  }
-  conseils.push({icon:"😴",txt:"Le sommeil est aussi important que l'alimentation : dormez 7 à 9h par nuit pour optimiser votre composition corporelle."});
-
-  // AFFICHAGE
-  document.getElementById("imcVal").textContent = imcR;
-  document.getElementById("imcVal").style.color = imcColor;
-  document.getElementById("imcLabel").textContent = imcLabel;
-  document.getElementById("imcLabel").style.color = imcColor;
-  document.getElementById("gaugeCursor").style.left = gaugePos+"%";
-
-  document.getElementById("calMaintien").textContent = tdee.toLocaleString();
-  document.getElementById("calObjectif").textContent = calObj.toLocaleString();
-  document.getElementById("calObjectif").style.color = objColor;
-  document.getElementById("objSub").textContent = objLabel;
-  document.getElementById("poidsIdeal").textContent = pideal;
-  document.getElementById("metabolisme").textContent = bmr.toLocaleString();
-
-  // Activités
-  var al = document.getElementById("activList");
-  al.innerHTML = "";
-  activData.forEach(function(a){
-    var pct = Math.round((a.cal/maxCal)*100);
-    al.innerHTML += '<div class="activ-row"><span class="activ-name">'+a.nom+'</span><div class="activ-bar-wrap"><div class="activ-bar" style="width:0%" data-pct="'+pct+'"></div></div><span class="activ-val">'+a.cal+' kcal</span></div>';
-  });
-
-  // Macros
-  var ml = document.getElementById("macroList");
-  ml.innerHTML = "";
-  macros.forEach(function(m){
-    ml.innerHTML += '<div class="activ-row"><span class="activ-name">'+m.nom+'</span><div class="activ-bar-wrap"><div class="activ-bar" style="width:0%;background:linear-gradient(90deg,#7c6fff,#a090ff)" data-pct="'+m.pct+'"></div></div><span class="activ-val">'+m.g+'g</span></div>';
-  });
-
-  // Conseils
-  var cl = document.getElementById("conseilsList");
-  cl.innerHTML = "";
-  conseils.forEach(function(c){
-    cl.innerHTML += '<div class="conseil"><span class="conseil-icon">'+c.icon+'</span><span>'+c.txt+'</span></div>';
-  });
-
-  // Afficher résultats
-  document.getElementById("formCard").style.display = "none";
-  document.getElementById("results").className = "results show";
-
-  // Animer les barres
-  setTimeout(function(){
-    document.querySelectorAll(".activ-bar").forEach(function(b){
-      b.style.width = b.dataset.pct+"%";
-    });
-  }, 100);
-
+// ============================================================
+// SANTÉ
+// ============================================================
+function calcSante(){
+  var age=parseFloat(document.getElementById("s-age").value);
+  var taille=parseFloat(document.getElementById("s-taille").value);
+  var poids=parseFloat(document.getElementById("s-poids").value);
+  var act=parseFloat(document.getElementById("s-act").value);
+  var obj=document.getElementById("s-obj").value;
+  if(!age||!taille||!poids){alert("Remplis tous les champs.");return;}
+  var imc=poids/((taille/100)*(taille/100));
+  var bmr=sGenre==="H"?88.362+(13.397*poids)+(4.799*taille)-(5.677*age):447.593+(9.247*poids)+(3.098*taille)-(4.330*age);
+  var tdee=Math.round(bmr*act);
+  var calObj=obj==="perte"?Math.round(tdee*0.8):obj==="surplus"?Math.round(tdee*1.1):tdee;
+  var pideal=sGenre==="H"?taille-100-(taille-150)/4:taille-100-(taille-150)/2.5;
+  var imcR=Math.round(imc*10)/10;
+  var imcLbl,imcColor,gPos;
+  if(imc<16.5){imcLbl="Dénutrition sévère";imcColor="#e17055";gPos=5;}
+  else if(imc<18.5){imcLbl="Maigreur";imcColor="#74b9ff";gPos=12;}
+  else if(imc<25){imcLbl="Poids normal ✅";imcColor="#00b894";gPos=37;}
+  else if(imc<30){imcLbl="Surpoids";imcColor="#fdcb6e";gPos=62;}
+  else{imcLbl="Obésité";imcColor="#e17055";gPos=88;}
+  document.getElementById("r-imc").textContent=imcR;
+  document.getElementById("r-imc").style.color=imcColor;
+  document.getElementById("r-imc-lbl").textContent=imcLbl;
+  document.getElementById("r-imc-lbl").style.color=imcColor;
+  document.getElementById("r-gauge").style.left=gPos+"%";
+  document.getElementById("r-cal").textContent=calObj.toLocaleString();
+  document.getElementById("r-cal-lbl").textContent=obj==="perte"?"perte de poids":obj==="surplus"?"prise de masse":"maintien";
+  document.getElementById("r-tdee").textContent=tdee.toLocaleString();
+  document.getElementById("r-pideal").textContent=Math.round(pideal*10)/10;
+  document.getElementById("r-bmr").textContent=Math.round(bmr).toLocaleString();
+  var acts=[{n:"🚶 Marche",m:3.5},{n:"🏃 Course",m:10},{n:"🚴 Vélo",m:7},{n:"🏊 Natation",m:8},{n:"🏋️ Muscu",m:6},{n:"🧘 Yoga",m:2.5}];
+  var max=0;var ad=acts.map(function(a){var c=Math.round(a.m*poids*0.5);if(c>max)max=c;return{n:a.n,c:c};});
+  var h="";ad.forEach(function(a){var p=Math.round(a.c/max*100);h+='<div class="bar-row"><span class="bar-name">'+a.n+'</span><div class="bar-wrap"><div class="bar-fill" style="width:0%" data-p="'+p+'"></div></div><span class="bar-val">'+a.c+' kcal</span></div>';});
+  document.getElementById("r-acts").innerHTML=h;
+  setTimeout(function(){document.querySelectorAll("#r-acts .bar-fill").forEach(function(b){b.style.width=b.dataset.p+"%";});},100);
+  var tips=[];
+  if(imc<18.5)tips.push({i:"🥑",t:"Augmentez vos apports : noix, avocat, huile d'olive, légumineuses sont vos alliés."});
+  else if(imc<25)tips.push({i:"✅",t:"Votre IMC est parfait ! Maintenez une alimentation équilibrée et une activité régulière."});
+  else{tips.push({i:"🥗",t:"Privilégiez légumes, protéines maigres et réduisez les sucres raffinés et aliments transformés."});}
+  if(obj==="perte")tips.push({i:"📉",t:"Visez 0.5 à 1 kg de perte par semaine maximum pour préserver la masse musculaire."});
+  tips.push({i:"😴",t:"Un sommeil de 7-9h/nuit régule les hormones de la faim et optimise votre métabolisme."});
+  var th="";tips.forEach(function(x){th+='<div class="conseil"><span>'+x.i+'</span><span>'+x.t+'</span></div>';});
+  document.getElementById("r-tips").innerHTML=th;
+  document.getElementById("s-form").style.display="none";
+  document.getElementById("s-res").style.display="block";
   window.scrollTo({top:0,behavior:"smooth"});
 }
-
-function resetForm() {
-  document.getElementById("formCard").style.display = "block";
-  document.getElementById("results").className = "results";
-  window.scrollTo({top:0,behavior:"smooth"});
+function calcEau(){
+  var p=parseFloat(document.getElementById("e-p").value);
+  if(!p){alert("Entre ton poids.");return;}
+  var a=parseFloat(document.getElementById("e-a").value);
+  var l=Math.round((p*0.033+a)*10)/10;
+  var v=Math.ceil(l/0.25);
+  document.getElementById("e-l").textContent=l;
+  document.getElementById("e-v").textContent=v;
+  document.getElementById("e-res").style.display="block";
 }
+
+// ============================================================
+// MAISON
+// ============================================================
+function calcPeinture(){
+  var lo=parseFloat(document.getElementById("p-l").value);
+  var la=parseFloat(document.getElementById("p-la").value);
+  var h=parseFloat(document.getElementById("p-h").value);
+  var po=parseInt(document.getElementById("p-p").value)||0;
+  var fe=parseInt(document.getElementById("p-f").value)||0;
+  var c=parseInt(document.getElementById("p-c").value)||2;
+  var r=parseInt(document.getElementById("p-r").value)||10;
+  if(!lo||!la||!h){alert("Remplis les dimensions.");return;}
+  var perim=2*(lo+la);
+  var murs=perim*h;
+  var porte=po*2.0; // 1m × 2m
+  var fen=fe*1.5;   // 1m × 1.5m
+  var net=Math.round((murs-porte-fen)*10)/10;
+  var litres=Math.round(net*c/r*10)/10;
+  var p5=Math.ceil(litres/5);
+  var p2=Math.ceil(litres/2.5);
+  document.getElementById("p-surface").textContent=net;
+  document.getElementById("p-litres").textContent=litres;
+  document.getElementById("p-pots5").textContent=p5;
+  document.getElementById("p-pots2").textContent=p2;
+  document.getElementById("p-conseil").textContent="Prévoyez 10% de marge supplémentaire. Pour un mur en mauvais état, doublez la première couche avec une sous-couche.";
+  document.getElementById("p-res").style.display="block";
+}
+function calcCarrelage(){
+  var l=parseFloat(document.getElementById("c-l").value);
+  var la=parseFloat(document.getElementById("c-la").value);
+  var ch=parseFloat(document.getElementById("c-ch").value)||10;
+  var px=parseFloat(document.getElementById("c-px").value)||0;
+  if(!l||!la){alert("Remplis les dimensions.");return;}
+  var surf=Math.round(l*la*100)/100;
+  var acheter=Math.round(surf*(1+ch/100)*100)/100;
+  var surplus=Math.round((acheter-surf)*100)/100;
+  document.getElementById("c-surf").textContent=surf;
+  document.getElementById("c-acheter").textContent=acheter;
+  document.getElementById("c-prix").textContent=px?Math.round(acheter*px)+"€":"--";
+  document.getElementById("c-surplus").textContent=surplus;
+  document.getElementById("c-res").style.display="block";
+}
+function calcBeton(){
+  var l=parseFloat(document.getElementById("b-l").value);
+  var la=parseFloat(document.getElementById("b-la").value);
+  var e=parseFloat(document.getElementById("b-e").value);
+  var t=document.getElementById("b-t").value;
+  if(!l||!la||!e){alert("Remplis toutes les dimensions.");return;}
+  var vol=Math.round(l*la*(e/100)*100)/100;
+  var sacs=Math.ceil(vol*1350/35); // 1m³ béton ≈ 1350kg
+  var ciment,sable;
+  if(t==="dalle"){ciment=Math.round(vol*300);sable=Math.round(vol*700);}
+  else if(t==="mortier"){ciment=Math.round(vol*350);sable=Math.round(vol*1200);}
+  else{ciment=Math.round(vol*250);sable=Math.round(vol*600);}
+  document.getElementById("b-vol").textContent=vol;
+  document.getElementById("b-sacs").textContent=sacs;
+  document.getElementById("b-ciment").textContent=ciment.toLocaleString();
+  document.getElementById("b-sable").textContent=sable.toLocaleString();
+  document.getElementById("b-res").style.display="block";
+}
+
+// ============================================================
+// FINANCE
+// ============================================================
+function calcCredit(){
+  var m=parseFloat(document.getElementById("cr-m").value);
+  var d=parseFloat(document.getElementById("cr-d").value);
+  var t=parseFloat(document.getElementById("cr-t").value)/100/12;
+  var a=parseFloat(document.getElementById("cr-a").value)||0;
+  if(!m||!d||!t){alert("Remplis tous les champs.");return;}
+  var n=d*12;
+  var mens=m*(t*Math.pow(1+t,n))/(Math.pow(1+t,n)-1);
+  var mensTotal=Math.round(mens+a);
+  var total=Math.round(mensTotal*n);
+  var interets=Math.round(total-m-a*n);
+  document.getElementById("cr-mens").textContent=mensTotal.toLocaleString()+" €";
+  document.getElementById("cr-total").textContent=total.toLocaleString()+" €";
+  document.getElementById("cr-interets").textContent=interets.toLocaleString()+" €";
+  document.getElementById("cr-ratio").textContent="--";
+  var c=mensTotal>3000?"⚠️ Attention, la mensualité est élevée. Pensez à négocier le taux ou allonger la durée.":"✅ Mensualité raisonnable. Essayez de rembourser par anticipation pour réduire les intérêts.";
+  document.getElementById("cr-conseil").textContent=c;
+  document.getElementById("cr-res").style.display="block";
+}
+function calcEpargne(){
+  var cap=parseFloat(document.getElementById("ep-c").value)||0;
+  var v=parseFloat(document.getElementById("ep-v").value)||0;
+  var t=parseFloat(document.getElementById("ep-t").value)/100/12;
+  var d=parseInt(document.getElementById("ep-d").value);
+  if(!d){alert("Entre une durée.");return;}
+  var n=d*12;
+  var total=cap*Math.pow(1+t,n)+v*(Math.pow(1+t,n)-1)/t;
+  var verse=cap+v*n;
+  var gains=total-verse;
+  document.getElementById("ep-total").textContent=Math.round(total).toLocaleString()+" €";
+  document.getElementById("ep-gains").textContent=Math.round(gains).toLocaleString()+" €";
+  document.getElementById("ep-verse").textContent=Math.round(verse).toLocaleString()+" €";
+  document.getElementById("ep-mult").textContent=Math.round(total/verse*100)/100+"×";
+  document.getElementById("ep-res").style.display="block";
+}
+function calcSalaire(){
+  var b=parseFloat(document.getElementById("sal-b").value);
+  var s=parseFloat(document.getElementById("sal-s").value);
+  if(!b){alert("Entre un salaire brut.");return;}
+  var cot=Math.round(b*s);
+  var net=b-cot;
+  var h=Math.round(net/(52*35/12)*100)/100;
+  document.getElementById("sal-net").textContent=Math.round(net).toLocaleString()+" €";
+  document.getElementById("sal-an").textContent=Math.round(net*12).toLocaleString()+" €";
+  document.getElementById("sal-cot").textContent=cot.toLocaleString()+" €";
+  document.getElementById("sal-h").textContent=h+" €";
+  document.getElementById("sal-res").style.display="block";
+}
+
+// ============================================================
+// AUTO
+// ============================================================
+function calcTrajet(){
+  var km=parseFloat(document.getElementById("a-km").value);
+  var px=parseFloat(document.getElementById("a-px").value);
+  var c=parseFloat(document.getElementById("a-conso").value);
+  var p=parseInt(document.getElementById("a-pass").value)||1;
+  if(!km||!px||!c){alert("Remplis tous les champs.");return;}
+  var litres=Math.round(km*c/100*100)/100;
+  var total=Math.round(litres*px*100)/100;
+  var pp=Math.round(total/p*100)/100;
+  var co2=Math.round(litres*2.37*10)/10; // essence: 2.37 kg CO2/L
+  document.getElementById("a-total").textContent=total+" €";
+  document.getElementById("a-pp").textContent=pp+" €";
+  document.getElementById("a-litres").textContent=litres+" L";
+  document.getElementById("a-co2").textContent=co2+" kg";
+  var train=Math.round(km*0.08); // ~8 cts/km train
+  document.getElementById("a-conseil").textContent="Ce trajet en voiture coûte "+total+"€ et émet "+co2+"kg de CO₂. En train, le coût serait d'environ "+train+"€ pour une empreinte carbone 3x plus faible.";
+  document.getElementById("a-res").style.display="block";
+}
+function calcVoiture(){
+  var km=parseFloat(document.getElementById("av-km").value)||0;
+  var c=parseFloat(document.getElementById("av-c").value)||0;
+  var ass=parseFloat(document.getElementById("av-ass").value)||0;
+  var ent=parseFloat(document.getElementById("av-ent").value)||0;
+  var cr=parseFloat(document.getElementById("av-cr").value)||0;
+  var px=parseFloat(document.getElementById("av-px").value)||1.85;
+  if(!km||!c){alert("Remplis au minimum les km et la consommation.");return;}
+  var carb=Math.round(km*c/100*px);
+  var total=Math.round(carb+ass*12+ent+cr*12);
+  var mois=Math.round(total/12);
+  var perkm=Math.round(total/km*100)/100;
+  document.getElementById("av-total").textContent=total.toLocaleString()+" €";
+  document.getElementById("av-mois").textContent=mois.toLocaleString()+" €";
+  document.getElementById("av-km-cout").textContent=perkm+" €";
+  document.getElementById("av-carb").textContent=carb.toLocaleString()+" €";
+  document.getElementById("av-res").style.display="block";
+}
+
+// ============================================================
+// CONVERTISSEURS
+// ============================================================
+function switchConv(id,btn){
+  document.querySelectorAll(".conv-panel").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll(".conv-tab").forEach(function(t){t.classList.remove("active");});
+  document.getElementById("cv-"+id).classList.add("active");
+  btn.classList.add("active");
+}
+// Facteurs de conversion vers unité de base
+var LONG_BASE={mm:0.001,cm:0.01,m:1,km:1000,in:0.0254,ft:0.3048,yd:0.9144,mi:1609.344};
+var POIDS_BASE={g:0.001,kg:1,t:1000,oz:0.028349,lb:0.453592};
+var VOL_BASE={ml:0.001,cl:0.01,l:1,m3:1000,floz:0.0295735,pt:0.473176,gal:3.78541};
+var SURF_BASE={cm2:0.0001,m2:1,ha:10000,km2:1000000,ft2:0.092903,acre:4046.86};
+var DEVISE_BASE={EUR:1,USD:1.08,GBP:0.85,CHF:0.96,CAD:1.47,JPY:163,MAD:10.8,DZD:145,TND:3.3,XOF:655};
+
+function convertUnits(val,from,to,table){
+  return val*table[from]/table[to];
+}
+function fmtConv(n){
+  if(Math.abs(n)>=10000)return n.toLocaleString("fr-FR",{maximumFractionDigits:0});
+  if(Math.abs(n)>=1)return parseFloat(n.toFixed(4)).toLocaleString("fr-FR");
+  return parseFloat(n.toPrecision(6)).toLocaleString("fr-FR");
+}
+function convLong(){
+  var v=parseFloat(document.getElementById("l-val").value);
+  var f=document.getElementById("l-from").value;
+  var t=document.getElementById("l-to").value;
+  if(isNaN(v))return;
+  var r=convertUnits(v,f,t,LONG_BASE);
+  document.getElementById("l-res").textContent=fmtConv(r);
+  document.getElementById("l-lbl").textContent=v+" "+f+" = "+fmtConv(r)+" "+t;
+}
+function convPoids(){
+  var v=parseFloat(document.getElementById("po-val").value);
+  var f=document.getElementById("po-from").value;
+  var t=document.getElementById("po-to").value;
+  if(isNaN(v))return;
+  var r=convertUnits(v,f,t,POIDS_BASE);
+  document.getElementById("po-res").textContent=fmtConv(r);
+  document.getElementById("po-lbl").textContent=v+" "+f+" = "+fmtConv(r)+" "+t;
+}
+function convTemp(){
+  var v=parseFloat(document.getElementById("t-val").value);
+  var f=document.getElementById("t-from").value;
+  var t=document.getElementById("t-to").value;
+  if(isNaN(v))return;
+  var c;
+  if(f==="C")c=v;else if(f==="F")c=(v-32)/1.8;else c=v-273.15;
+  var r;
+  if(t==="C")r=c;else if(t==="F")r=c*1.8+32;else r=c+273.15;
+  r=Math.round(r*100)/100;
+  document.getElementById("t-res").textContent=r;
+  document.getElementById("t-lbl").textContent=v+"°"+f+" = "+r+"°"+t;
+}
+function convVol(){
+  var v=parseFloat(document.getElementById("v-val").value);
+  var f=document.getElementById("v-from").value;
+  var t=document.getElementById("v-to").value;
+  if(isNaN(v))return;
+  var r=convertUnits(v,f,t,VOL_BASE);
+  document.getElementById("v-res").textContent=fmtConv(r);
+  document.getElementById("v-lbl").textContent=v+" "+f+" = "+fmtConv(r)+" "+t;
+}
+function convSurf(){
+  var v=parseFloat(document.getElementById("su-val").value);
+  var f=document.getElementById("su-from").value;
+  var t=document.getElementById("su-to").value;
+  if(isNaN(v))return;
+  var r=convertUnits(v,f,t,SURF_BASE);
+  document.getElementById("su-res").textContent=fmtConv(r);
+  document.getElementById("su-lbl").textContent=v+" "+f+" = "+fmtConv(r)+" "+t;
+}
+function convDevise(){
+  var v=parseFloat(document.getElementById("d-val").value);
+  var f=document.getElementById("d-from").value;
+  var t=document.getElementById("d-to").value;
+  if(isNaN(v))return;
+  var r=v/DEVISE_BASE[f]*DEVISE_BASE[t];
+  document.getElementById("d-res").textContent=fmtConv(r);
+  document.getElementById("d-lbl").textContent=v+" "+f+" ≈ "+fmtConv(r)+" "+t+" (taux indicatif)";
+}
+// Tailles vêtements
+var HABITS={
+  top:{labels:["XS (36)","S (38)","M (40)","L (42)","XL (44)","XXL (46)","3XL (48)"],
+       UK:["6","8","10","12","14","16","18"],US:["2","4","6","8","10","12","14"],IT:["36","38","40","42","44","46","48"]},
+  pantalon:{labels:["36","38","40","42","44","46","48"],
+       UK:["8","10","12","14","16","18","20"],US:["26","28","30","32","34","36","38"],IT:["40","42","44","46","48","50","52"]},
+  chaussure:{labels:["36","37","38","39","40","41","42","43","44","45","46"],
+       UK:["3","4","5","6","7","8","9","10","11","12","13"],US:["5","6","7","8","9","10","11","12","13","14","15"],IT:["36","37","38","39","40","41","42","43","44","45","46"]}
+};
+function updateHabitOptions(){
+  var t=document.getElementById("h-type").value;
+  var sel=document.getElementById("h-val");
+  sel.innerHTML=HABITS[t].labels.map(function(l,i){return'<option value="'+i+'">'+l+'</option>';}).join("");
+  convHabit();
+}
+function convHabit(){
+  var t=document.getElementById("h-type").value;
+  var i=parseInt(document.getElementById("h-val").value)||0;
+  var h=HABITS[t];
+  if(!h||i>=h.labels.length)return;
+  var html='<div class="res-grid">';
+  html+='<div class="res-box res-highlight"><div class="res-val" style="font-size:20px;">'+h.labels[i]+'</div><div class="res-lbl">France / EU</div></div>';
+  html+='<div class="res-box"><div class="res-val" style="font-size:20px;">'+h.UK[i]+'</div><div class="res-lbl">Royaume-Uni</div></div>';
+  html+='<div class="res-box"><div class="res-val" style="font-size:20px;">'+h.US[i]+'</div><div class="res-lbl">États-Unis</div></div>';
+  html+='<div class="res-box"><div class="res-val" style="font-size:20px;">'+h.IT[i]+'</div><div class="res-lbl">Italie</div></div>';
+  html+='</div>';
+  document.getElementById("h-res").innerHTML=html;
+}
+document.getElementById("h-type").addEventListener("change",updateHabitOptions);
+updateHabitOptions();
+
+// ============================================================
+// BÉBÉ
+// ============================================================
+function calcDPA(){
+  var ddr=document.getElementById("ddr").value;
+  if(!ddr){alert("Entre la date de tes dernières règles.");return;}
+  var d=new Date(ddr);
+  var dpa=new Date(d.getTime()+280*24*3600*1000); // 40 semaines
+  var today=new Date();
+  var sa=Math.floor((today-d)/(7*24*3600*1000));
+  var jRestants=Math.round((dpa-today)/(24*3600*1000));
+  var trim=sa<14?"1er":sa<28?"2ème":"3ème";
+  document.getElementById("dpa-date").textContent=fmtDate(dpa);
+  document.getElementById("dpa-sem").textContent=Math.max(0,sa)+" SA";
+  document.getElementById("dpa-jours").textContent=Math.max(0,jRestants)+" j";
+  document.getElementById("dpa-trim").textContent=trim;
+  var infos=["Pensez à prendre de l'acide folique dès maintenant si vous êtes en début de grossesse.","Les 3 premières échographies sont prévues vers 12, 22 et 32 SA.","Consultez votre sage-femme ou gynécologue régulièrement tout au long de la grossesse."];
+  document.getElementById("dpa-info").textContent=infos[Math.floor(sa/14)]||infos[2];
+  document.getElementById("dpa-res").style.display="block";
+}
+function calcOvulation(){
+  var ddr=document.getElementById("ov-ddr").value;
+  var cycle=parseInt(document.getElementById("ov-cycle").value)||28;
+  if(!ddr){alert("Entre la date de tes dernières règles.");return;}
+  var d=new Date(ddr);
+  var ov=new Date(d.getTime()+(cycle-14)*24*3600*1000);
+  var debut=new Date(ov.getTime()-5*24*3600*1000);
+  var fin=new Date(ov.getTime()+1*24*3600*1000);
+  var prochaines=new Date(d.getTime()+cycle*24*3600*1000);
+  document.getElementById("ov-date").textContent=fmtDate(ov);
+  document.getElementById("ov-debut").textContent=fmtDate(debut);
+  document.getElementById("ov-fin").textContent=fmtDate(fin);
+  document.getElementById("ov-proch").textContent=fmtDate(prochaines);
+  document.getElementById("ov-res").style.display="block";
+}
+// Courbe poids bébé OMS simplifiée (garçon, médiane, P10, P90) en mois 0-24
+var BB_G={m:[3.3,4.5,5.6,6.4,7.0,7.5,7.9,8.3,8.6,8.9,9.2,9.4,9.6,9.9,10.1,10.3,10.5,10.7,10.9,11.1,11.3,11.5,11.8,12.2],p10:[2.9,3.9,4.9,5.7,6.2,6.7,7.1,7.4,7.7,8.0,8.2,8.4,8.6,8.8,9.0,9.2,9.4,9.6,9.8,10.0,10.1,10.3,10.5,10.8],p90:[3.9,5.1,6.3,7.2,7.8,8.4,8.8,9.2,9.6,9.9,10.2,10.5,10.8,11.1,11.3,11.6,11.8,12.0,12.3,12.5,12.8,13.0,13.3,13.7]};
+var BB_F={m:[3.2,4.2,5.1,5.8,6.4,6.9,7.3,7.6,7.9,8.2,8.5,8.7,8.9,9.2,9.4,9.6,9.8,10.0,10.2,10.4,10.6,10.9,11.1,11.5],p10:[2.8,3.6,4.5,5.2,5.7,6.1,6.5,6.8,7.1,7.3,7.6,7.8,8.0,8.2,8.4,8.6,8.8,9.0,9.2,9.4,9.6,9.8,10.0,10.4],p90:[3.7,4.8,5.8,6.6,7.3,7.8,8.2,8.6,9.0,9.3,9.6,9.9,10.1,10.4,10.6,10.9,11.1,11.4,11.6,11.9,12.1,12.4,12.7,13.1]};
+function calcBebe(){
+  var age=parseInt(document.getElementById("bb-age").value);
+  var unit=document.getElementById("bb-unit").value;
+  var poids=parseFloat(document.getElementById("bb-poids").value);
+  var sexe=document.getElementById("bb-sexe").value;
+  if(isNaN(age)||isNaN(poids)){alert("Remplis tous les champs.");return;}
+  if(unit==="sem")age=Math.round(age/4.3);
+  age=Math.min(age,23);
+  var ref=sexe==="G"?BB_G:BB_F;
+  var med=ref.m[age],p10=ref.p10[age],p90=ref.p90[age];
+  var pct;
+  if(poids<=p10)pct="< 10ème";
+  else if(poids<=med)pct=Math.round(10+(poids-p10)/(med-p10)*40)+"ème";
+  else if(poids<=p90)pct=Math.round(50+(poids-med)/(p90-med)*40)+"ème";
+  else pct="> 90ème";
+  document.getElementById("bb-percentile").textContent=pct;
+  document.getElementById("bb-median").textContent=med+" kg";
+  document.getElementById("bb-p10").textContent=p10+" kg";
+  document.getElementById("bb-p90").textContent=p90+" kg";
+  var info;
+  if(poids<p10)info="Le poids de votre bébé est en dessous du 10ème percentile. Consultez votre pédiatre.";
+  else if(poids>p90)info="Le poids de votre bébé est au dessus du 90ème percentile. C'est souvent normal mais consultez votre pédiatre.";
+  else info="Le poids de votre bébé est dans la norme pour son âge et son sexe. Continuez le suivi régulier !";
+  document.getElementById("bb-info").textContent=info;
+  document.getElementById("bb-res").style.display="block";
+}
+
+// ============================================================
+// DATES
+// ============================================================
+function calcAge(){
+  var dn=document.getElementById("ag-dn").value;
+  if(!dn)return;
+  var d=new Date(dn);
+  var today=new Date();
+  var ans=today.getFullYear()-d.getFullYear();
+  var m=today.getMonth()-d.getMonth();
+  if(m<0||(m===0&&today.getDate()<d.getDate())){ans--;m+=12;}
+  if(today.getDate()<d.getDate())m--;
+  if(m<0)m+=12;
+  var j=Math.floor((today-d)/86400000);
+  var prochain=new Date(d);
+  prochain.setFullYear(today.getFullYear());
+  if(prochain<today)prochain.setFullYear(today.getFullYear()+1);
+  var jAv=Math.round((prochain-today)/86400000);
+  document.getElementById("ag-ans").textContent=ans;
+  document.getElementById("ag-mois").textContent=m;
+  document.getElementById("ag-jours").textContent=today.getDate()-new Date(today.getFullYear(),today.getMonth(),d.getDate()).getDate()<0?today.getDate()+new Date(today.getFullYear(),today.getMonth(),0).getDate()-d.getDate():today.getDate()-d.getDate()<0?today.getDate()+28-d.getDate():today.getDate()-d.getDate();
+  document.getElementById("ag-total").textContent=j.toLocaleString();
+  document.getElementById("ag-prochain").textContent=jAv===0?"🎉 Joyeux anniversaire !":"Votre prochain anniversaire est dans "+jAv+" jours ("+fmtDate(prochain)+").";
+  document.getElementById("ag-res").style.display="block";
+}
+function calcJours(){
+  var d1=document.getElementById("jj-d1").value;
+  var d2=document.getElementById("jj-d2").value;
+  if(!d1||!d2)return;
+  var dd1=new Date(d1),dd2=new Date(d2);
+  var diff=Math.abs(dd2-dd1);
+  var j=Math.round(diff/86400000);
+  document.getElementById("jj-jours").textContent=j.toLocaleString();
+  document.getElementById("jj-sem").textContent=Math.round(j/7*10)/10;
+  document.getElementById("jj-mois").textContent=Math.round(j/30.44*10)/10;
+  document.getElementById("jj-ans").textContent=Math.round(j/365.25*100)/100;
+  document.getElementById("jj-res").style.display="block";
+}
+function calcDateX(){
+  var d=document.getElementById("xj-d").value;
+  var n=parseInt(document.getElementById("xj-n").value);
+  if(!d||isNaN(n)){alert("Remplis les deux champs.");return;}
+  var res=new Date(new Date(d).getTime()+n*86400000);
+  document.getElementById("xj-date").textContent=fmtDate(res);
+  document.getElementById("xj-jour").textContent=fmtDateLong(res);
+  document.getElementById("xj-res").style.display="block";
+}
+function calcRetraite(){
+  var n=parseInt(document.getElementById("ret-n").value);
+  var t=parseInt(document.getElementById("ret-t").value)||0;
+  if(!n||n<1950||n>2005){alert("Entre une année de naissance valide.");return;}
+  // Réforme 2023 simplifiée
+  var ageMin,tauxPlein;
+  if(n<=1957){ageMin=62;tauxPlein=167;}
+  else if(n<=1960){ageMin=63;tauxPlein=168;}
+  else if(n<=1963){ageMin=64;tauxPlein=169;}
+  else if(n<=1966){ageMin=64;tauxPlein=170;}
+  else if(n<=1972){ageMin=64;tauxPlein=171;}
+  else{ageMin=64;tauxPlein=172;}
+  var manq=Math.max(0,tauxPlein-t);
+  var anneeDepart=n+ageMin;
+  document.getElementById("ret-age").textContent=ageMin+" ans";
+  document.getElementById("ret-annee").textContent=anneeDepart;
+  document.getElementById("ret-manq").textContent=manq>0?manq+" trim.":"✅ Complets";
+  document.getElementById("ret-taux").textContent=tauxPlein+" trim.";
+  var info=manq>0?"Il vous manque encore "+manq+" trimestre"+(manq>1?"s":"")+" pour le taux plein. Continuez à cotiser !":"Vous avez tous vos trimestres ! Vous pouvez partir à taux plein dès "+anneeDepart+".";
+  document.getElementById("ret-info").textContent=info;
+  document.getElementById("ret-res").style.display="block";
+}
+
+// Init date fields
+var today=new Date().toISOString().split("T")[0];
+document.getElementById("xj-d").value=today;
+document.getElementById("jj-d1").value=today;
+document.getElementById("jj-d2").value=today;
 </script>
 </body>
 </html>
